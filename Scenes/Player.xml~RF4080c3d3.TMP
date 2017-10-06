@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resource_file type="PackedScene" subresource_count="14" version="2.1" version_name="Godot Engine v2.1.4.stable.official">
+	<ext_resource path="res://Scripts/Player.gd" type="Script" index="0"></ext_resource>
+	<ext_resource path="res://Scenes/dialogueBox.xml" type="PackedScene" index="3"></ext_resource>
+	<ext_resource path="res://Sprites/shadow.png" type="Texture" index="1"></ext_resource>
+	<ext_resource path="res://Sprites/ph_dude.png" type="Texture" index="2"></ext_resource>
+	<resource type="CircleShape2D" path="local://10">
+		<real name="custom_solver_bias"> 0 </real>
+		<real name="radius"> 10 </real>
+
+	</resource>
+	<resource type="Animation" path="local://2">
+		<string name="resource/name"> "idle_d" </string>
+		<real name="length"> 1 </real>
+		<bool name="loop"> False </bool>
+		<real name="step"> 0.1 </real>
+		<string name="tracks/0/type"> "value" </string>
+		<node_path name="tracks/0/path"> ".:frame" </node_path>
+		<int name="tracks/0/interp"> 1 </int>
+		<bool name="tracks/0/imported"> False </bool>
+		<dictionary name="tracks/0/keys" shared="false">
+			<string> "times" </string>
+			<real_array  len="1"> 				0 </real_array>
+			<string> "transitions" </string>
+			<real_array  len="1"> 				1 </real_array>
+			<string> "update" </string>
+			<int> 1 </int>
+			<string> "values" </string>
+			<array  len="1" shared="false">
+				<int> 131 </int>
+			</array>
+		</dictionary>
+
+	</resource>
+	<resource type="Animation" path="local://3">
+		<string name="resource/name"> "idle_l" </string>
+		<real name="length"> 1 </real>
+		<bool name="loop"> False </bool>
+		<real name="step"> 0.1 </real>
+		<string name="tracks/0/type"> "value" </string>
+		<node_path name="tracks/0/path"> ".:frame" </node_path>
+		<int name="tracks/0/interp"> 1 </int>
+		<bool name="tracks/0/imported"> False </bool>
+		<dictionary name="tracks/0/keys" shared="false">
+			<string> "times" </string>
+			<real_array  len="1"> 				0 </real_array>
+			<string> "transitions" </string>
+			<real_array  len="1"> 				1 </real_array>
+			<string> "update" </string>
+			<int> 1 </int>
+			<string> "values" </string>
+			<array  len="1" shared="false">
+				<int> 117 </int>
+			</array>
+		</dictionary>
+
+	</resource>
+	<resource type="Animation" path="local://4">
+		<string name="resource/name"> "idle_r" </string>
+		<real name="length"> 1 </real>
+		<bool name="loop"> False </bool>
+		<real name="step"> 0.1 </real>
+		<string name="tracks/0/type"> "value" </string>
+		<node_path name="tracks/0/path"> ".:frame" </node_path>
+		<int name="tracks/0/interp"> 1 </int>
+		<bool name="tracks/0/imported"> False </bool>
+		<dictionary name="tracks/0/keys" shared="false">
+			<string> "times" </string>
+			<real_array  len="1"> 				0 </real_array>
+			<string> "transitions" </string>
+			<real_array  len="1"> 				1 </real_array>
+			<string> "update" </string>
+			<int> 1 </int>
+			<string> "values" </string>
+			<array  len="1" shared="false">
+				<int> 143 </int>
+			</array>
+		</dictionary>
+
+	</resource>
+	<resource type="Animation" path="local://5">
+		<string name="resource/name"> "idle_u" </string>
+		<real name="length"> 1 </real>
+		<bool name="loop"> False </bool>
+		<real name="step"> 0.1 </real>
+		<string name="tracks/0/type"> "value" </string>
+		<node_path name="tracks/0/path"> ".:frame" </node_path>
+		<int name="tracks/0/interp"> 1 </int>
+		<bool name="tracks/0/imported"> False </bool>
+		<dictionary name="tracks/0/keys" shared="false">
+			<string> "times" </string>
+			<real_array  len="1"> 				0 </real_array>
+			<string> "transitions" </string>
+			<real_array  len="1"> 				1 </real_array>
+			<string> "update" </string>
+			<int> 1 </int>
+			<string> "values" </string>
+			<array  len="1" shared="false">
+				<int> 104 </int>
+			</array>
+		</dictionary>
+
+	</resource>
+	<resource type="Animation" path="local://6">
+		<string name="resource/name"> "walk_d" </string>
+		<real name="length"> 4 </real>
+		<bool name="loop"> True </bool>
+		<real name="step"> 0.5 </real>
+		<string name="tracks/0/type"> "value" </string>
+		<node_path name="tracks/0/path"> ".:frame" </node_path>
+		<int name="tracks/0/interp"> 1 </int>
+		<bool name="tracks/0/imported"> False </bool>
+		<dictionary name="tracks/0/keys" shared="false">
+			<string> "times" </string>
+			<real_array  len="8"> 				0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5 </real_array>
+			<string> "transitions" </string>
+			<real_array  len="8"> 				1, 1, 1, 1, 1, 1, 1, 1 </real_array>
+			<string> "update" </string>
+			<int> 1 </int>
+			<string> "values" </string>
+			<array  len="8" shared="false">
+				<int> 131 </int>
+				<int> 132 </int>
+				<int> 133 </int>
+				<int> 134 </int>
+				<int> 135 </int>
+				<int> 136 </int>
+				<int> 137 </int>
+				<int> 138 </int>
+			</array>
+		</dictionary>
+
+	</resource>
+	<resource type="Animation" path="local://7">
+		<string name="resource/name"> "walk_l" </string>
+		<real name="length"> 4 </real>
+		<bool name="loop"> True </bool>
+		<real name="step"> 0.5 </real>
+		<string name="tracks/0/type"> "value" </string>
+		<node_path name="tracks/0/path"> ".:frame" </node_path>
+		<int name="tracks/0/interp"> 1 </int>
+		<bool name="tracks/0/imported"> False </bool>
+		<dictionary name="tracks/0/keys" shared="false">
+			<string> "times" </string>
+			<real_array  len="8"> 				0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5 </real_array>
+			<string> "transitions" </string>
+			<real_array  len="8"> 				1, 1, 1, 1, 1, 1, 1, 1 </real_array>
+			<string> "update" </string>
+			<int> 1 </int>
+			<string> "values" </string>
+			<array  len="8" shared="false">
+				<int> 118 </int>
+				<int> 119 </int>
+				<int> 120 </int>
+				<int> 121 </int>
+				<int> 122 </int>
+				<int> 123 </int>
+				<int> 124 </int>
+				<int> 125 </int>
+			</array>
+		</dictionary>
+
+	</resource>
+	<resource type="Animation" path="local://8">
+		<string name="resource/name"> "walk_r" </string>
+		<real name="length"> 4 </real>
+		<bool name="loop"> True </bool>
+		<real name="step"> 0.5 </real>
+		<string name="tracks/0/type"> "value" </string>
+		<node_path name="tracks/0/path"> ".:frame" </node_path>
+		<int name="tracks/0/interp"> 1 </int>
+		<bool name="tracks/0/imported"> False </bool>
+		<dictionary name="tracks/0/keys" shared="false">
+			<string> "times" </string>
+			<real_array  len="8"> 				0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5 </real_array>
+			<string> "transitions" </string>
+			<real_array  len="8"> 				1, 1, 1, 1, 1, 1, 1, 1 </real_array>
+			<string> "update" </string>
+			<int> 1 </int>
+			<string> "values" </string>
+			<array  len="8" shared="false">
+				<int> 144 </int>
+				<int> 145 </int>
+				<int> 146 </int>
+				<int> 147 </int>
+				<int> 148 </int>
+				<int> 149 </int>
+				<int> 150 </int>
+				<int> 151 </int>
+			</array>
+		</dictionary>
+
+	</resource>
+	<resource type="Animation" path="local://9">
+		<string name="resource/name"> "walk_u" </string>
+		<real name="length"> 4 </real>
+		<bool name="loop"> True </bool>
+		<real name="step"> 0.5 </real>
+		<string name="tracks/0/type"> "value" </string>
+		<node_path name="tracks/0/path"> ".:frame" </node_path>
+		<int name="tracks/0/interp"> 1 </int>
+		<bool name="tracks/0/imported"> False </bool>
+		<dictionary name="tracks/0/keys" shared="false">
+			<string> "times" </string>
+			<real_array  len="8"> 				0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5 </real_array>
+			<string> "transitions" </string>
+			<real_array  len="8"> 				1, 1, 1, 1, 1, 1, 1, 1 </real_array>
+			<string> "update" </string>
+			<int> 1 </int>
+			<string> "values" </string>
+			<array  len="8" shared="false">
+				<int> 105 </int>
+				<int> 106 </int>
+				<int> 107 </int>
+				<int> 108 </int>
+				<int> 109 </int>
+				<int> 110 </int>
+				<int> 111 </int>
+				<int> 112 </int>
+			</array>
+		</dictionary>
+
+	</resource>
+	<main_resource>
+		<dictionary name="_bundled" shared="false">
+			<string> "conn_count" </string>
+			<int> 0 </int>
+			<string> "conns" </string>
+			<int_array  len="0"> 				 </int_array>
+			<string> "editable_instances" </string>
+			<array  len="0" shared="false">
+			</array>
+			<string> "names" </string>
+			<string_array  len="72">
+				<string> "Player" </string>
+				<string> "input/pickable" </string>
+				<string> "shapes/0/shape" </string>
+				<string> "shapes/0/transform" </string>
+				<string> "shapes/0/trigger" </string>
+				<string> "collision/layers" </string>
+				<string> "collision/mask" </string>
+				<string> "collision/margin" </string>
+				<string> "script/script" </string>
+				<string> "MOTION_SPEED" </string>
+				<string> "KinematicBody2D" </string>
+				<string> "shadow" </string>
+				<string> "texture" </string>
+				<string> "Sprite" </string>
+				<string> "collision" </string>
+				<string> "transform/pos" </string>
+				<string> "transform/scale" </string>
+				<string> "shape" </string>
+				<string> "trigger" </string>
+				<string> "_update_shape_index" </string>
+				<string> "CollisionShape2D" </string>
+				<string> "RayCast2D" </string>
+				<string> "enabled" </string>
+				<string> "cast_to" </string>
+				<string> "layer_mask" </string>
+				<string> "type_mask" </string>
+				<string> "__meta__" </string>
+				<string> "visible" </string>
+				<string> "vframes" </string>
+				<string> "hframes" </string>
+				<string> "frame" </string>
+				<string> "AnimationPlayer" </string>
+				<string> "playback/process_mode" </string>
+				<string> "playback/default_blend_time" </string>
+				<string> "root/root" </string>
+				<string> "anims/idle_d" </string>
+				<string> "anims/idle_l" </string>
+				<string> "anims/idle_r" </string>
+				<string> "anims/idle_u" </string>
+				<string> "anims/walk_d" </string>
+				<string> "anims/walk_l" </string>
+				<string> "anims/walk_r" </string>
+				<string> "anims/walk_u" </string>
+				<string> "playback/active" </string>
+				<string> "playback/speed" </string>
+				<string> "blend_times" </string>
+				<string> "autoplay" </string>
+				<string> "playerCam" </string>
+				<string> "z/z" </string>
+				<string> "anchor_mode" </string>
+				<string> "rotating" </string>
+				<string> "current" </string>
+				<string> "zoom" </string>
+				<string> "limit/left" </string>
+				<string> "limit/top" </string>
+				<string> "limit/right" </string>
+				<string> "limit/bottom" </string>
+				<string> "drag_margin/h_enabled" </string>
+				<string> "drag_margin/v_enabled" </string>
+				<string> "smoothing/enable" </string>
+				<string> "smoothing/speed" </string>
+				<string> "drag_margin/left" </string>
+				<string> "drag_margin/top" </string>
+				<string> "drag_margin/right" </string>
+				<string> "drag_margin/bottom" </string>
+				<string> "Camera2D" </string>
+				<string> "dialogueBox" </string>
+				<string> "visibility/visible" </string>
+				<string> "margin/left" </string>
+				<string> "margin/top" </string>
+				<string> "margin/right" </string>
+				<string> "margin/bottom" </string>
+			</string_array>
+			<string> "node_count" </string>
+			<int> 8 </int>
+			<string> "node_paths" </string>
+			<array  len="0" shared="false">
+			</array>
+			<string> "nodes" </string>
+			<int_array  len="180"> 				-1, -1, 10, 0, -1, 9, 1, 0, 2, 1, 3, 2, 4, 0, 5, 3, 6, 3, 7, 4, 8, 5, 9, 6, 0, 0, 0, 13, 11, -1, 1, 12, 7, 0, 0, 0, 20, 14, -1, 5, 15, 8, 16, 9, 17, 1, 18, 0, 19, 10, 0, 0, 0, 21, 21, -1, 5, 22, 0, 23, 11, 24, 3, 25, 12, 26, 13, 0, 0, 0, 13, 27, -1, 5, 15, 14, 12, 15, 28, 16, 29, 17, 30, 18, 0, 4, 0, 31, 31, -1, 15, 32, 3, 33, 19, 34, 20, 35, 21, 36, 22, 37, 23, 38, 24, 39, 25, 40, 26, 41, 27, 42, 28, 43, 29, 44, 30, 45, 31, 46, 32, 0, 0, 0, 65, 47, -1, 17, 48, 33, 49, 3, 50, 0, 51, 29, 52, 34, 53, 35, 54, 35, 55, 36, 56, 36, 57, 29, 58, 29, 59, 0, 60, 37, 61, 19, 62, 19, 63, 19, 64, 19, 0, 6, 0, 2147483647, 66, 38, 5, 67, 0, 68, 39, 69, 40, 70, 41, 71, 42, 0 </int_array>
+			<string> "variants" </string>
+			<array  len="43" shared="false">
+				<bool> False </bool>
+				<resource  resource_type="Shape2D" path="local://10">  </resource>
+				<matrix32> 1.23077, -0, 0, 1.08358, 0, 5.09946 </matrix32>
+				<int> 1 </int>
+				<real> 0.08 </real>
+				<resource  external="0">  </resource>
+				<int> 140 </int>
+				<resource  external="1">  </resource>
+				<vector2> 0, 5.09946 </vector2>
+				<vector2> 1.23077, 1.08358 </vector2>
+				<int> 0 </int>
+				<vector2> 0, 50 </vector2>
+				<int> 15 </int>
+				<dictionary  shared="false">
+					<string> "_edit_lock_" </string>
+					<bool> True </bool>
+				</dictionary>
+				<vector2> 0, -16 </vector2>
+				<resource  external="2">  </resource>
+				<int> 21 </int>
+				<int> 13 </int>
+				<int> 144 </int>
+				<real> 0 </real>
+				<node_path> ".." </node_path>
+				<resource  resource_type="Animation" path="local://2">  </resource>
+				<resource  resource_type="Animation" path="local://3">  </resource>
+				<resource  resource_type="Animation" path="local://4">  </resource>
+				<resource  resource_type="Animation" path="local://5">  </resource>
+				<resource  resource_type="Animation" path="local://6">  </resource>
+				<resource  resource_type="Animation" path="local://7">  </resource>
+				<resource  resource_type="Animation" path="local://8">  </resource>
+				<resource  resource_type="Animation" path="local://9">  </resource>
+				<bool> True </bool>
+				<real> 8 </real>
+				<array  len="0" shared="false">
+				</array>
+				<string> "idle_d" </string>
+				<int> 2 </int>
+				<vector2> 1, 1 </vector2>
+				<int> -10000000 </int>
+				<int> 10000000 </int>
+				<real> 5 </real>
+				<resource  external="3">  </resource>
+				<real> -503 </real>
+				<real> 176 </real>
+				<real> 500 </real>
+				<real> 287 </real>
+			</array>
+			<string> "version" </string>
+			<int> 2 </int>
+		</dictionary>
+
+	</main_resource>
+</resource_file>

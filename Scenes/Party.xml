@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resource_file type="PackedScene" subresource_count="12" version="2.1" version_name="Godot Engine v2.1.4.stable.official">
+	<ext_resource path="res://Scenes/PartyItem.xml" type="PackedScene" index="2"></ext_resource>
+	<ext_resource path="res://Fonts/Introdile.ttf" type="DynamicFontData" index="5"></ext_resource>
+	<ext_resource path="res://Sprites/portraits.png" type="Texture" index="4"></ext_resource>
+	<ext_resource path="res://Sprites/portraitselect.png" type="Texture" index="3"></ext_resource>
+	<ext_resource path="res://Sprites/partybg.png" type="Texture" index="1"></ext_resource>
+	<ext_resource path="res://Sprites/partyList.png" type="Texture" index="6"></ext_resource>
+	<ext_resource path="res://Scripts/Party.gd" type="Script" index="0"></ext_resource>
+	<resource type="Animation" path="local://3">
+		<string name="resource/name"> "pulse" </string>
+		<real name="length"> 1 </real>
+		<bool name="loop"> True </bool>
+		<real name="step"> 0.1 </real>
+		<string name="tracks/0/type"> "value" </string>
+		<node_path name="tracks/0/path"> ".:frame" </node_path>
+		<int name="tracks/0/interp"> 1 </int>
+		<bool name="tracks/0/imported"> False </bool>
+		<dictionary name="tracks/0/keys" shared="false">
+			<string> "times" </string>
+			<real_array  len="2"> 				0, 0.5 </real_array>
+			<string> "transitions" </string>
+			<real_array  len="2"> 				1, 1 </real_array>
+			<string> "update" </string>
+			<int> 1 </int>
+			<string> "values" </string>
+			<array  len="2" shared="false">
+				<int> 0 </int>
+				<int> 1 </int>
+			</array>
+		</dictionary>
+
+	</resource>
+	<resource type="DynamicFont" path="local://1">
+		<int name="font/size"> 22 </int>
+		<bool name="font/use_mipmaps"> False </bool>
+		<bool name="font/use_filter"> False </bool>
+		<resource name="font/font" external="5">  </resource>
+		<resource name="fallback/0"></resource>
+	</resource>
+	<resource type="DynamicFont" path="local://2">
+		<int name="font/size"> 22 </int>
+		<bool name="font/use_mipmaps"> False </bool>
+		<bool name="font/use_filter"> False </bool>
+		<resource name="font/font" external="5">  </resource>
+		<resource name="fallback/0"></resource>
+	</resource>
+	<resource type="DynamicFont" path="local://4">
+		<int name="font/size"> 22 </int>
+		<bool name="font/use_mipmaps"> False </bool>
+		<bool name="font/use_filter"> False </bool>
+		<resource name="font/font" external="5">  </resource>
+		<resource name="fallback/0"></resource>
+	</resource>
+	<main_resource>
+		<dictionary name="_bundled" shared="false">
+			<string> "conn_count" </string>
+			<int> 0 </int>
+			<string> "conns" </string>
+			<int_array  len="0"> 				 </int_array>
+			<string> "editable_instances" </string>
+			<array  len="0" shared="false">
+			</array>
+			<string> "names" </string>
+			<string_array  len="90">
+				<string> "Party" </string>
+				<string> "process/pause_mode" </string>
+				<string> "layer" </string>
+				<string> "offset" </string>
+				<string> "rotation" </string>
+				<string> "scale" </string>
+				<string> "script/script" </string>
+				<string> "CanvasLayer" </string>
+				<string> "bg" </string>
+				<string> "transform/pos" </string>
+				<string> "transform/scale" </string>
+				<string> "texture" </string>
+				<string> "modulate" </string>
+				<string> "Sprite" </string>
+				<string> "partyItems" </string>
+				<string> "Node2D" </string>
+				<string> "_active1" </string>
+				<string> "_active2" </string>
+				<string> "_active3" </string>
+				<string> "_active4" </string>
+				<string> "inactive1" </string>
+				<string> "inactive2" </string>
+				<string> "inactive3" </string>
+				<string> "inactive4" </string>
+				<string> "inactive5" </string>
+				<string> "inactive6" </string>
+				<string> "inactive7" </string>
+				<string> "inactive8" </string>
+				<string> "select" </string>
+				<string> "editor/display_folded" </string>
+				<string> "hframes" </string>
+				<string> "AnimationPlayer" </string>
+				<string> "playback/process_mode" </string>
+				<string> "playback/default_blend_time" </string>
+				<string> "root/root" </string>
+				<string> "anims/pulse" </string>
+				<string> "playback/active" </string>
+				<string> "playback/speed" </string>
+				<string> "blend_times" </string>
+				<string> "autoplay" </string>
+				<string> "partyImage" </string>
+				<string> "vframes" </string>
+				<string> "frame" </string>
+				<string> "partyInfo" </string>
+				<string> "Name" </string>
+				<string> "focus/ignore_mouse" </string>
+				<string> "focus/stop_mouse" </string>
+				<string> "size_flags/horizontal" </string>
+				<string> "size_flags/vertical" </string>
+				<string> "margin/left" </string>
+				<string> "margin/top" </string>
+				<string> "margin/right" </string>
+				<string> "margin/bottom" </string>
+				<string> "custom_fonts/font" </string>
+				<string> "custom_colors/font_color" </string>
+				<string> "text" </string>
+				<string> "align" </string>
+				<string> "valign" </string>
+				<string> "percent_visible" </string>
+				<string> "lines_skipped" </string>
+				<string> "max_lines_visible" </string>
+				<string> "Label" </string>
+				<string> "Class" </string>
+				<string> "Health" </string>
+				<string> "Energy" </string>
+				<string> "Might" </string>
+				<string> "Crit" </string>
+				<string> "Potency" </string>
+				<string> "Echo" </string>
+				<string> "Dodge" </string>
+				<string> "Speed" </string>
+				<string> "Desc" </string>
+				<string> "autowrap" </string>
+				<string> "staticLabels" </string>
+				<string> "iActive" </string>
+				<string> "iInactive" </string>
+				<string> "iHealth" </string>
+				<string> "iEnergy" </string>
+				<string> "iMight" </string>
+				<string> "iPotency" </string>
+				<string> "iDodge" </string>
+				<string> "iCrit" </string>
+				<string> "iEcho" </string>
+				<string> "iEcho1" </string>
+				<string> "activeBadges" </string>
+				<string> "visibility/visible" </string>
+				<string> "1" </string>
+				<string> "2" </string>
+				<string> "3" </string>
+				<string> "4" </string>
+			</string_array>
+			<string> "node_count" </string>
+			<int> 46 </int>
+			<string> "node_paths" </string>
+			<array  len="0" shared="false">
+			</array>
+			<string> "nodes" </string>
+			<int_array  len="1090"> 				-1, -1, 7, 0, -1, 6, 1, 0, 2, 1, 3, 2, 4, 3, 5, 4, 6, 5, 0, 0, 0, 13, 8, -1, 5, 1, 0, 9, 6, 10, 7, 11, 8, 12, 9, 0, 0, 0, 15, 14, -1, 0, 0, 2, 0, 2147483647, 16, 10, 1, 9, 11, 0, 2, 0, 2147483647, 17, 10, 1, 9, 12, 0, 2, 0, 2147483647, 18, 10, 1, 9, 13, 0, 2, 0, 2147483647, 19, 10, 1, 9, 14, 0, 2, 0, 2147483647, 20, 10, 1, 9, 15, 0, 2, 0, 2147483647, 21, 10, 1, 9, 16, 0, 2, 0, 2147483647, 22, 10, 1, 9, 17, 0, 2, 0, 2147483647, 23, 10, 1, 9, 18, 0, 2, 0, 2147483647, 24, 10, 1, 9, 19, 0, 2, 0, 2147483647, 25, 10, 1, 9, 20, 0, 2, 0, 2147483647, 26, 10, 1, 9, 21, 0, 2, 0, 2147483647, 27, 10, 1, 9, 22, 0, 0, 0, 13, 28, -1, 5, 29, 23, 9, 24, 10, 25, 11, 26, 30, 0, 0, 15, 0, 31, 31, -1, 8, 32, 1, 33, 3, 34, 27, 35, 28, 36, 23, 37, 29, 38, 30, 39, 31, 0, 0, 0, 13, 40, -1, 6, 9, 32, 10, 25, 11, 33, 41, 34, 30, 34, 42, 1, 0, 0, 0, 15, 43, -1, 0, 0, 18, 0, 61, 44, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 36, 50, 37, 51, 38, 52, 39, 53, 40, 54, 41, 55, 42, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 18, 0, 61, 62, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 44, 50, 45, 51, 46, 52, 47, 53, 48, 54, 41, 55, 42, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 18, 0, 61, 63, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 49, 50, 50, 51, 51, 52, 52, 53, 48, 54, 41, 55, 53, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 18, 0, 61, 64, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 49, 50, 54, 51, 51, 52, 55, 53, 48, 54, 41, 55, 53, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 18, 0, 61, 65, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 56, 50, 57, 51, 58, 52, 59, 53, 48, 54, 41, 55, 53, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 18, 0, 61, 66, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 60, 50, 57, 51, 61, 52, 59, 53, 48, 54, 41, 55, 53, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 18, 0, 61, 67, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 56, 50, 62, 51, 58, 52, 63, 53, 48, 54, 41, 55, 53, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 18, 0, 61, 68, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 60, 50, 62, 51, 61, 52, 63, 53, 48, 54, 41, 55, 53, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 18, 0, 61, 69, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 56, 50, 64, 51, 58, 52, 65, 53, 48, 54, 41, 55, 53, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 18, 0, 61, 70, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 60, 50, 64, 51, 61, 52, 65, 53, 48, 54, 41, 55, 53, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 18, 0, 61, 71, -1, 15, 45, 23, 46, 23, 47, 0, 48, 35, 49, 66, 50, 67, 51, 68, 52, 69, 53, 48, 54, 41, 55, 70, 72, 23, 58, 29, 59, 35, 60, 43, 0, 18, 0, 15, 73, -1, 1, 29, 23, 0, 30, 0, 61, 74, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 71, 50, 72, 51, 73, 52, 74, 53, 75, 54, 41, 55, 76, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 30, 0, 61, 75, -1, 16, 45, 23, 46, 23, 47, 0, 48, 35, 49, 71, 50, 77, 51, 78, 52, 79, 53, 75, 54, 41, 55, 80, 56, 1, 57, 1, 58, 29, 59, 35, 60, 43, 0, 30, 0, 61, 76, -1, 14, 45, 23, 46, 23, 47, 0, 48, 35, 49, 72, 50, 50, 51, 81, 52, 52, 53, 75, 54, 41, 55, 82, 58, 29, 59, 35, 60, 43, 0, 30, 0, 61, 77, -1, 14, 45, 23, 46, 23, 47, 0, 48, 35, 49, 72, 50, 54, 51, 83, 52, 55, 53, 75, 54, 41, 55, 84, 58, 29, 59, 35, 60, 43, 0, 30, 0, 61, 78, -1, 14, 45, 23, 46, 23, 47, 0, 48, 35, 49, 72, 50, 57, 51, 83, 52, 59, 53, 75, 54, 41, 55, 85, 58, 29, 59, 35, 60, 43, 0, 30, 0, 61, 79, -1, 14, 45, 23, 46, 23, 47, 0, 48, 35, 49, 72, 50, 62, 51, 86, 52, 63, 53, 75, 54, 41, 55, 87, 58, 29, 59, 35, 60, 43, 0, 30, 0, 61, 80, -1, 14, 45, 23, 46, 23, 47, 0, 48, 35, 49, 72, 50, 64, 51, 86, 52, 65, 53, 75, 54, 41, 55, 88, 58, 29, 59, 35, 60, 43, 0, 30, 0, 61, 81, -1, 14, 45, 23, 46, 23, 47, 0, 48, 35, 49, 77, 50, 57, 51, 89, 52, 59, 53, 75, 54, 41, 55, 90, 58, 29, 59, 35, 60, 43, 0, 30, 0, 61, 82, -1, 14, 45, 23, 46, 23, 47, 0, 48, 35, 49, 77, 50, 62, 51, 89, 52, 63, 53, 75, 54, 41, 55, 91, 58, 29, 59, 35, 60, 43, 0, 30, 0, 61, 83, -1, 14, 45, 23, 46, 23, 47, 0, 48, 35, 49, 77, 50, 64, 51, 89, 52, 65, 53, 75, 54, 41, 55, 92, 58, 29, 59, 35, 60, 43, 0, 0, 0, 15, 84, -1, 3, 29, 23, 85, 93, 9, 94, 0, 41, 0, 13, 86, -1, 4, 9, 95, 10, 25, 11, 96, 30, 34, 0, 41, 0, 13, 87, -1, 5, 9, 95, 10, 25, 11, 96, 30, 34, 42, 1, 0, 41, 0, 13, 88, -1, 5, 9, 95, 10, 25, 11, 96, 30, 34, 42, 0, 0, 41, 0, 13, 89, -1, 5, 9, 95, 10, 25, 11, 96, 30, 34, 42, 97, 0 </int_array>
+			<string> "variants" </string>
+			<array  len="98" shared="false">
+				<int> 2 </int>
+				<int> 1 </int>
+				<vector2> 0, 0 </vector2>
+				<real> 0 </real>
+				<vector2> 1, 1 </vector2>
+				<resource  external="0">  </resource>
+				<vector2> 509.347, 300.013 </vector2>
+				<vector2> 32.8295, 19.5725 </vector2>
+				<resource  external="1">  </resource>
+				<color> 0.292236, 0.368557, 0.667969, 1 </color>
+				<resource  external="2">  </resource>
+				<vector2> 494, 118 </vector2>
+				<vector2> 634, 118 </vector2>
+				<vector2> 774, 118 </vector2>
+				<vector2> 914, 118 </vector2>
+				<vector2> 494, 322 </vector2>
+				<vector2> 634, 322 </vector2>
+				<vector2> 774, 322 </vector2>
+				<vector2> 914, 322 </vector2>
+				<vector2> 494, 462 </vector2>
+				<vector2> 634, 462 </vector2>
+				<vector2> 774, 462 </vector2>
+				<vector2> 914, 462 </vector2>
+				<bool> True </bool>
+				<vector2> 410, 134 </vector2>
+				<vector2> 2, 2 </vector2>
+				<resource  external="3">  </resource>
+				<node_path> ".." </node_path>
+				<resource  resource_type="Animation" path="local://3">  </resource>
+				<real> 1 </real>
+				<array  len="0" shared="false">
+				</array>
+				<string> "pulse" </string>
+				<vector2> 174, 97 </vector2>
+				<resource  external="4">  </resource>
+				<int> 4 </int>
+				<int> 0 </int>
+				<real> 31 </real>
+				<real> 172 </real>
+				<real> 329 </real>
+				<real> 198 </real>
+				<resource  resource_type="DynamicFont" path="local://1">  </resource>
+				<color> 0, 0, 0, 1 </color>
+				<string> "hewwo!" </string>
+				<int> -1 </int>
+				<real> 79 </real>
+				<real> 205 </real>
+				<real> 281 </real>
+				<real> 231 </real>
+				<resource  resource_type="DynamicFont" path="local://2">  </resource>
+				<real> 117 </real>
+				<real> 240 </real>
+				<real> 297 </real>
+				<real> 266 </real>
+				<string> "0" </string>
+				<real> 272 </real>
+				<real> 298 </real>
+				<real> 139 </real>
+				<real> 320 </real>
+				<real> 211 </real>
+				<real> 346 </real>
+				<real> 299 </real>
+				<real> 371 </real>
+				<real> 352 </real>
+				<real> 378 </real>
+				<real> 384 </real>
+				<real> 410 </real>
+				<real> 15 </real>
+				<real> 439 </real>
+				<real> 355 </real>
+				<real> 597 </real>
+				<string> "H-hewwo? Mister Obama, is that you? I-I need hewp" </string>
+				<real> 368 </real>
+				<real> 16 </real>
+				<real> 464 </real>
+				<real> 42 </real>
+				<resource  resource_type="DynamicFont" path="local://4">  </resource>
+				<string> "Active Party" </string>
+				<real> 224 </real>
+				<real> 550 </real>
+				<real> 250 </real>
+				<string> "Inactive Party" </string>
+				<real> 112 </real>
+				<string> "Health:" </string>
+				<real> 122 </real>
+				<string> "Energy:" </string>
+				<string> "Might:" </string>
+				<real> 132 </real>
+				<string> "Potency:" </string>
+				<string> "Dodge:" </string>
+				<real> 330 </real>
+				<string> "Crit:" </string>
+				<string> "Echo:" </string>
+				<string> "Speed:" </string>
+				<bool> False </bool>
+				<vector2> -35, -35 </vector2>
+				<vector2> -6, -6 </vector2>
+				<resource  external="6">  </resource>
+				<int> 3 </int>
+			</array>
+			<string> "version" </string>
+			<int> 2 </int>
+		</dictionary>
+
+	</main_resource>
+</resource_file>
