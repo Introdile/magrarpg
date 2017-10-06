@@ -8,10 +8,13 @@ var turnLength
 var toNextTurn
 
 #actor lists
-var foeParty = []
-var foeList = []
-var curBattleList = []
-var turnOrder = []
+var foeParty = [] #the list of foes passed to here
+
+var foeList = [] #the list of battleActors with the foe info
+var allyList = [] #the list of battleActors with ally info
+
+var curBattleList = [] #the list of all battleActors
+var turnOrder = [] #another list of all battleActors, in turn order (may contain duplicates)
 
 onready var cSel = get_node("charSelector")
 
@@ -22,6 +25,10 @@ var down = false
 var left = false
 var right = false
 var menu = false
+
+var tSel = 0
+var select = false
+var selTarget = "" #should be "FOE", "ALLY", "FIELD", or "ALL"
 
 #button list
 var buttons = []
@@ -62,6 +69,7 @@ func _ready():
 			#node.reset_stats(false)
 			allyHolder.add_child(node)
 			curBattleList.append(node)
+			allyList.append(node)
 	
 	var fset = 0
 	for i in foeParty:
@@ -97,7 +105,7 @@ func _ready():
 	
 	turnLength = curBattleList.size()
 	toNextTurn = turnLength
-	
+	print(str(foeList.size()))
 	clear_pos_nodes()
 	make_turn_order()
 	set_process_unhandled_input(true)
@@ -105,27 +113,25 @@ func _ready():
 
 func _fixed_process(delta):
 	turnOrder.front().get_node("labelHolder").set_hidden(false)
-	if interact:
-		advanceTurn()
 	check_button_hover()
+	
+	if check_current_turn():
+		enemy_attack(turnOrder.front())
+	
+	if !select:
+		update_char_selector(turnOrder.front())
+	elif select:
+		select_target()
+	
+	if interact:
+		check_current_turn()
+	
 	interact = false
 	up = false
 	down = false
 	left = false
 	right = false
 	menu = false
-
-func advanceTurn():
-	turnOrder.front().get_node("labelHolder").set_hidden(true)
-	turnOrder.push_back(turnOrder.front())
-	turnOrder.pop_front()
-	turn_order_list()
-	toNextTurn -= 1
-	if toNextTurn <= 0:
-		turn+= 1
-		toNextTurn = turnLength
-	update_char_selector(turnOrder.front())
-	get_node("turnLabel").set_text(str(turn))
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_menu"):
@@ -199,14 +205,15 @@ func turn_order_list():
 		var node = port.instance()
 		node.set_pos(Vector2(x,global.screen_h-35))
 		node.set_scale(Vector2(1,1))
+		node.get_node("portBG").set_hidden(true)
 		node.get_node("charPortrait").set_frame(i.ref.portrait)
-		#node.get_node("charPortrait").set_region(true)
-		#node.get_node("charPortrait").set_region_rect(Rect2(i.ref.portrait*64,12,64,16))
+		node.get_node("battleMask").set_enabled(true)
 		get_node("TurnOrder").add_child(node)
 		x += 70
 
 func update_char_selector(obj):
 	cSel.set_pos(obj.get_pos())
+	#obj.show_labels(true)
 
 func check_button_hover():
 	get_node("buttonLabel").set_text("")
@@ -226,23 +233,56 @@ func clear_pos_nodes():
 	#get_node("foeHolder/foe5").free()
 	#get_node("foeHolder/foe6").free()
 
+func advanceTurn():
+	turnOrder.front().get_node("labelHolder").set_hidden(true)
+	turnOrder.push_back(turnOrder.front())
+	turnOrder.pop_front()
+	turn_order_list()
+	toNextTurn -= 1
+	if toNextTurn <= 0:
+		turn+= 1
+		toNextTurn = turnLength
+	get_node("turnLabel").set_text(str(turn))
+	print("It is "+turnOrder.front().ref.name+"'s turn!")
+
 func _on_pass_pressed():
+	turnOrder.front().wait()
 	advanceTurn()
 
 func _on_attack_pressed():
 	print(turnOrder.front().ref.name + " attacking!")
-	var t = select_target()
-	turnOrder.front().attack(t)
-	#turnOrder.front().attack(turnOrder.front())
-	advanceTurn()
+	select = true
+
+func check_current_turn():
+	var fof = false
+	for i in foeList:
+		if i.ref.name == turnOrder.front().ref.name:
+			fof = true
+	return fof
 
 func select_target():
-	var target = null
-	var tSel = 0
+	if up:
+		if tSel > 0:
+			tSel -= 1
+		else:
+			tSel = foeList.size()-1
+		print(str(tSel)+" "+str(foeList[tSel].get_name()))
+	if down:
+		if tSel < foeList.size()-1:
+			tSel += 1
+		else:
+			tSel = 0
+		print(str(tSel)+" "+str(foeList[tSel].get_name()))
 	update_char_selector(foeList[tSel])
+	
+	if interact:
+		turnOrder.front().attack(foeList[tSel])
+		select = false
+		advanceTurn()
 
-
-
-
-
+func enemy_attack(enemy):
+	#'enemy' accepts a battleActor instance
+	print(enemy.ref.name +" lashes out with an attack!")
+	enemy.attack(allyList[round(rand_range(0,allyList.size()-1))])
+	advanceTurn()
 

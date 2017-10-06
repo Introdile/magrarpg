@@ -3,27 +3,35 @@ extends Node2D
 onready var ref
 var defeated = false
 
+var damageText = preload("res://Scenes/damageTaken.xml")
+
 #export(String, "Magic", "Melee", "Ranged") var AttackType
 #export(String, MULTILINE) var UnitName = ''
 #export(Texture) var UnitImage
 
 #attacks the target which is another unit
 func attack(target):
-	var attackPower = rand_range(ref.minAtk,ref.maxAtk)
+	var attackPower = round(rand_range(ref.minAtk,ref.maxAtk))
 
 	var absorbed = 0 #round(attackPower)*(target.Armor*0.1))
 
 	var totalDamage = attackPower - absorbed
+	var critChance = ref.AM*2
 	
 	var dodged = false
+	var critical = false
 	
-	var ch = rand_range(3,18)
-	print(ch)
-	if ch < target.ref.DG*0.1:
-		totalDamage = 0
-		dodged = true
+	var ch = round(rand_range(1,100))
+	if ch < critChance:
+		print(ref.name + " lashed out viciously! Critical hit!")
+		totalDamage = totalDamage * 2
+		critical = true
+	#print(ch)
+	#if ch < target.ref.DG*0.1:
+	#	totalDamage = 0
+	#	dodged = true
 	
-	target.takeDamage(totalDamage,dodged)
+	target.takeDamage(totalDamage,critical,dodged)
 	consumeEnergy(1)
 
 func consumeEnergy(amount):
@@ -36,20 +44,28 @@ func wait():
 		ref.cEN = ref.EN
 	get_node("labelHolder/barEG").set_value(ref.cEN)
 	print("Regained "+str(ref.rEN)+" energy!")
-	#get_node("CombatText").set_text("Rested...restored "+str(1+Intelligence)+" Exertion")
 
-func takeDamage(amount,dodged):
+func takeDamage(amount,critical,dodged):
 	ref.cHP = ref.cHP - amount
 	if ref.cHP > 0 :
 		get_node("labelHolder/barHP").set_value(ref.cHP)
 		if dodged:
 			print("Dodged!")
 		else:
-			print("-"+str(amount)+" damage taken!")
+			print(ref.name + " has taken "+str(amount)+" damage!")
 	else:
 		die()
 	if ref.cHP < 0:
 		ref.cHP = 0
+	
+	var dT = damageText.instance()
+	dT.set_pos(self.get_pos()+dT.get_pos())
+	dT.set_text(str(amount))
+	if critical:
+		dT.get_node("AnimationPlayer").play("crit")
+	else:
+		dT.get_node("AnimationPlayer").play("float")
+	add_child(dT)
 
 func die():
 	if !defeated:
@@ -84,6 +100,9 @@ func update_statLabels():
 	get_node("labelHolder/EC").set_text(str(ref.EC))
 	get_node("labelHolder/DG").set_text(str(ref.DG))
 	get_node("labelHolder/SD").set_text(str(ref.SD))
+
+func show_labels(t):
+	get_node("labelHolder").set_hidden(t)
 
 func _on_hoverArea_mouse_enter():
 	get_node("labelHolder").set_hidden(false)

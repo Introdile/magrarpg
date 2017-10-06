@@ -64,7 +64,6 @@ autoplay = "idle"
 
 [node name="labelHolder" type="Node2D" parent="."]
 
-editor/display_folded = true
 visibility/visible = false
 
 [node name="statics" type="Node2D" parent="labelHolder"]

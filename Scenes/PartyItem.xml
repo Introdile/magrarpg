@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<resource_file type="PackedScene" subresource_count="3" version="2.1" version_name="Godot Engine v2.1.4.stable.official">
-	<ext_resource path="res://Sprites/portraits.png" type="Texture" index="1"></ext_resource>
+<resource_file type="PackedScene" subresource_count="4" version="2.1" version_name="Godot Engine v2.1.4.stable.official">
 	<ext_resource path="res://Sprites/portraitframe.png" type="Texture" index="0"></ext_resource>
+	<ext_resource path="res://Sprites/portraits.png" type="Texture" index="1"></ext_resource>
+	<ext_resource path="res://Sprites/mask.png" type="Texture" index="2"></ext_resource>
 	<main_resource>
 		<dictionary name="_bundled" shared="false">
 			<string> "conn_count" </string>
@@ -12,28 +13,64 @@
 			<array  len="0" shared="false">
 			</array>
 			<string> "names" </string>
-			<string_array  len="7">
+			<string_array  len="29">
 				<string> "PartyItem" </string>
 				<string> "transform/scale" </string>
+				<string> "Node2D" </string>
+				<string> "portBG" </string>
 				<string> "texture" </string>
 				<string> "Sprite" </string>
 				<string> "charPortrait" </string>
 				<string> "vframes" </string>
 				<string> "hframes" </string>
+				<string> "battleMask" </string>
+				<string> "enabled" </string>
+				<string> "editor_only" </string>
+				<string> "offset" </string>
+				<string> "scale" </string>
+				<string> "color" </string>
+				<string> "energy" </string>
+				<string> "mode" </string>
+				<string> "range/height" </string>
+				<string> "range/z_min" </string>
+				<string> "range/z_max" </string>
+				<string> "range/layer_min" </string>
+				<string> "range/layer_max" </string>
+				<string> "range/item_mask" </string>
+				<string> "shadow/enabled" </string>
+				<string> "shadow/color" </string>
+				<string> "shadow/buffer_size" </string>
+				<string> "shadow/esm_multiplier" </string>
+				<string> "shadow/item_mask" </string>
+				<string> "Light2D" </string>
 			</string_array>
 			<string> "node_count" </string>
-			<int> 2 </int>
+			<int> 4 </int>
 			<string> "node_paths" </string>
 			<array  len="0" shared="false">
 			</array>
 			<string> "nodes" </string>
-			<int_array  len="24"> 				-1, -1, 3, 0, -1, 2, 1, 0, 2, 1, 0, 0, 0, 3, 4, -1, 3, 2, 2, 5, 3, 6, 3, 0 </int_array>
+			<int_array  len="76"> 				-1, -1, 2, 0, -1, 1, 1, 0, 0, 0, 0, 5, 3, -1, 1, 4, 1, 0, 0, 0, 5, 6, -1, 3, 4, 2, 7, 3, 8, 3, 0, 0, 0, 28, 9, -1, 19, 10, 4, 11, 4, 4, 5, 12, 6, 13, 7, 14, 8, 15, 7, 16, 9, 17, 10, 18, 11, 19, 12, 20, 13, 21, 13, 22, 14, 23, 4, 24, 15, 25, 16, 26, 17, 27, 14, 0 </int_array>
 			<string> "variants" </string>
-			<array  len="4" shared="false">
+			<array  len="18" shared="false">
 				<vector2> 2, 2 </vector2>
 				<resource  external="0">  </resource>
 				<resource  external="1">  </resource>
 				<int> 4 </int>
+				<bool> False </bool>
+				<resource  external="2">  </resource>
+				<vector2> 0, 0 </vector2>
+				<real> 1 </real>
+				<color> 1, 1, 1, 1 </color>
+				<int> 3 </int>
+				<real> 0 </real>
+				<int> -1024 </int>
+				<int> 1024 </int>
+				<int> 0 </int>
+				<int> 1 </int>
+				<color> 0, 0, 0, 0 </color>
+				<int> 2048 </int>
+				<real> 80 </real>
 			</array>
 			<string> "version" </string>
 			<int> 2 </int>
