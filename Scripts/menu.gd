@@ -78,7 +78,7 @@ func _unhandled_key_input(key_event):
 			down = true
 		elif key_event.is_action_released("ui_down"):
 			down = false
-
+			
 func _open_menu():
 	set_hidden(false)
 	get_tree().set_pause(true)

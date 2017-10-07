@@ -125,6 +125,11 @@ func update_info(num, act):
 			get_node("partyInfo/Name").set_text(GAME_DATA.party[num].name)
 			get_node("partyInfo/Class").set_text(GAME_DATA.party[num].spec)
 			
+			#lvl and xp
+			get_node("partyInfo/Lvl").set_text(str(GAME_DATA.party[num].level))
+			get_node("partyInfo/XP").set_max(GAME_DATA.party[num].xpToNext)
+			get_node("partyInfo/XP").set_value(GAME_DATA.party[num].xp)
+			
 			#other stats
 			get_node("partyInfo/Health").set_text(str(GAME_DATA.party[num].HP))
 			get_node("partyInfo/Energy").set_text(str(GAME_DATA.party[num].EN))
@@ -145,6 +150,11 @@ func update_info(num, act):
 			get_node("partyInfo/Name").set_text(GAME_DATA.inactive[inum].name)
 			get_node("partyInfo/Class").set_text(GAME_DATA.inactive[inum].spec)
 			
+			#lvl and xp
+			get_node("partyInfo/Lvl").set_text(str(GAME_DATA.inactive[inum].level))
+			get_node("partyInfo/XP").set_max(GAME_DATA.inactive[inum].xpToNext)
+			get_node("partyInfo/XP").set_value(GAME_DATA.inactive[inum].xp)
+			
 			#other stats
 			get_node("partyInfo/Health").set_text(str(GAME_DATA.inactive[inum].HP))
 			get_node("partyInfo/Energy").set_text(str(GAME_DATA.inactive[inum].EN))
@@ -160,6 +170,7 @@ func update_info(num, act):
 			get_node("partyInfo/Desc").set_text(GAME_DATA.inactive[inum].shortDesc)
 			#if partyHolder.get_child(num) != null:
 			#	partySelect.set_pos(partyHolder.get_pos()+partyHolder.get_child(num).get_pos())
+	get_node("partyInfo/XP/tXP").set_text(str(get_node("partyInfo/XP").get_value()) + "/" + str(get_node("partyInfo/XP").get_max()))
 	partySelect.set_pos(partyHolder.get_pos()+partyHolder.get_child(num).get_pos())
 
 func move_party_member(num):

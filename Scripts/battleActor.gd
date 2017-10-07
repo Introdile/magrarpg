@@ -5,6 +5,8 @@ var defeated = false
 
 var damageText = preload("res://Scenes/damageTaken.xml")
 
+onready var anim = get_node("sBattle/AnimationPlayer")
+
 #export(String, "Magic", "Melee", "Ranged") var AttackType
 #export(String, MULTILINE) var UnitName = ''
 #export(Texture) var UnitImage
@@ -21,6 +23,8 @@ func attack(target):
 	var dodged = false
 	var critical = false
 	
+	var attack = get_node("sBattle/AnimationPlayer").get_animation("attack")
+	
 	var ch = round(rand_range(1,100))
 	if ch < critChance:
 		print(ref.name + " lashed out viciously! Critical hit!")
@@ -30,6 +34,8 @@ func attack(target):
 	#if ch < target.ref.DG*0.1:
 	#	totalDamage = 0
 	#	dodged = true
+	attack.track_insert_key(0,2,target.get_pos()-get_pos())
+	anim.play("attack")
 	
 	target.takeDamage(totalDamage,critical,dodged)
 	consumeEnergy(1)
@@ -79,14 +85,21 @@ func die():
 
 func _ready():
 	randomize()
-	ref._reset_stats("ALL")
+	#ref._reset_stats("ALL")
 	#ref.SD = round(rand_range(1,100))
-	print(ref.name + "'s speed is now "+str(ref.SD))
+	#print(ref.name + "'s speed is now "+str(ref.SD))
+	#get_node("labelHolder/barHP").set_max(ref.HP)
+	#get_node("labelHolder/barEG").set_max(ref.EN)
+	#get_node("labelHolder/Name").set_text(ref.name)
+	#update_statLabels()
+	set_process_input(true)
+
+func update_me():
+	get_node("sBattle").set_texture(ref.battleSprite)
 	get_node("labelHolder/barHP").set_max(ref.HP)
 	get_node("labelHolder/barEG").set_max(ref.EN)
 	get_node("labelHolder/Name").set_text(ref.name)
 	update_statLabels()
-	set_process_input(true)
 
 func _on_hurtSenra_pressed():
 	takeDamage(10,false)

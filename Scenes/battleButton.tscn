@@ -6,6 +6,7 @@
 
 [node name="button" type="TextureButton"]
 
+visibility/self_opacity = 0.0
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
