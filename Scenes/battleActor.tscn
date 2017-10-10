@@ -121,6 +121,7 @@ autoplay = "idle"
 
 [node name="labelHolder" type="Node2D" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 
 [node name="statics" type="Node2D" parent="labelHolder"]
@@ -474,8 +475,17 @@ range/exp_edit = false
 range/rounded = false
 percent/visible = false
 
+[node name="restTime" type="Timer" parent="."]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
 [connection signal="mouse_enter" from="hoverArea" to="." method="_on_hoverArea_mouse_enter"]
 
 [connection signal="mouse_exit" from="hoverArea" to="." method="_on_hoverArea_mouse_exit"]
+
+[connection signal="timeout" from="restTime" to="." method="_on_rest_done"]
 
 

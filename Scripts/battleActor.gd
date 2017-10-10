@@ -2,7 +2,8 @@
 
 onready var ref
 var defeated = false
-var BA_STATE = "HOLD" #IDLE | ACTION | ATTACK | RETURN | HOLD | DEFEATED
+var BA_LAST_STATE = ""
+var BA_STATE = "HOLD" #IDLE | ACTION | ATTACK | RETURN | HOLD | DEFEATED | REST
 signal currentState(state)
 
 var damageText = preload("res://Scenes/damageTaken.xml")
@@ -11,11 +12,15 @@ onready var anim = get_node("sBattle/AnimationPlayer")
 onready var atb_p = get_node("atb")
 
 var startPos
+var sigOnce = false
 var atb = 0
 
 #attacks the target which is another unit
 func attack(target):
-	BA_STATE = "ATTACK"
+	changeState("ATTACK")
+	if !sigOnce:
+		emit_signal("currentState",BA_STATE)
+		sigOnce = true
 	var attackPower = round(rand_range(ref.minAtk,ref.maxAtk))
 
 	var absorbed = 0 #round(attackPower)*(target.Armor*0.1))
@@ -99,23 +104,27 @@ func process_state():
 	if BA_STATE == "IDLE":
 		if anim.get_current_animation() != "idle":
 			anim.play("idle")
-		if atb+(ref.SD*0.1) < 100:
-			atb += ref.SD*0.1
-		elif atb+(ref.SD*0.1) >= 100:
-			BA_STATE = "ACTION"
+		if atb+(ref.SD*0.05) < 100:
+			atb += ref.SD*0.05
+		elif atb+(ref.SD*0.05) >= 100:
+			changeState("ACTION")
 			emit_signal("currentState",BA_STATE)
 			#print(BA_STATE)
 		atb_p.set_value(atb)
 	elif BA_STATE == "RETURN":
-		emit_signal("currentState",BA_STATE)
-		anim.get_animation("return").track_insert_key(0,0,get_node("sBattle").get_pos())
-		anim.play("return")
+		if anim.get_current_animation() != "return":
+			atb = 0
+			atb_p.set_value(atb)
+			anim.get_animation("return").track_insert_key(0,0,get_node("sBattle").get_pos())
+			anim.play("return")
 
 func update_me():
 	get_node("sBattle").set_texture(ref.battleSprite)
 	get_node("labelHolder/barHP").set_max(ref.HP)
 	get_node("labelHolder/barEG").set_max(ref.EN)
 	get_node("labelHolder/Name").set_text(ref.name)
+	
+	print(ref.name + " ATB speed is "+str(ref.SD*0.05))
 	update_statLabels()
 
 func update_statLabels():
@@ -128,11 +137,28 @@ func update_statLabels():
 	get_node("labelHolder/DG").set_text(str(ref.DG))
 	get_node("labelHolder/SD").set_text(str(ref.SD))
 
+func changeState(state):
+	BA_LAST_STATE = BA_STATE
+	BA_STATE = state
+	sigOnce = false
+	print(ref.name + " changes state to " + BA_STATE)
+
+func revertState():
+	changeState(BA_LAST_STATE)
+	sigOnce = false
+	print(ref.name + " reverts state to " + BA_STATE)
+
 func show_labels(t):
 	get_node("labelHolder").set_hidden(t)
 
 func attackDone():
-	BA_STATE = "RETURN"
+	changeState("RETURN")
 
 func returnDone():
-	BA_STATE = "IDLE"
+	emit_signal("currentState",BA_STATE)
+	get_node("restTime").set_wait_time(5)
+	get_node("restTime").start()
+	changeState("REST")
+
+func _on_rest_done():
+	changeState("IDLE")

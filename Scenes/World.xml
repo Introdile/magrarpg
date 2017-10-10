@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resource_file type="PackedScene" subresource_count="8" version="2.1" version_name="Godot Engine v2.1.4.stable.official">
 	<ext_resource path="res://Scripts/World.gd" type="Script" index="0"></ext_resource>
-	<ext_resource path="res://Scenes/gui.xml" type="PackedScene" index="5"></ext_resource>
 	<ext_resource path="res://Scenes/Interactable.xml" type="PackedScene" index="4"></ext_resource>
-	<ext_resource path="res://Scenes/sceneChanger.tscn" type="PackedScene" index="6"></ext_resource>
 	<ext_resource path="res://Scenes/Player.xml" type="PackedScene" index="3"></ext_resource>
+	<ext_resource path="res://Scenes/gui.xml" type="PackedScene" index="5"></ext_resource>
+	<ext_resource path="res://Scenes/sceneChanger.tscn" type="PackedScene" index="6"></ext_resource>
 	<ext_resource path="res://Scenes/Tileset.xml" type="TileSet" index="2"></ext_resource>
 	<ext_resource path="res://Scenes/Floor.xml" type="TileSet" index="1"></ext_resource>
 	<main_resource>
