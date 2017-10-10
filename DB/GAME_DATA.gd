@@ -15,6 +15,4 @@ func _ready():
 	inactive.push_back(DB.characters[1].make_new(1))
 	inactive.push_back(DB.characters[2].make_new(1))
 	inactive.push_back(DB.characters[1].make_new(1))
-	inactive.push_back(DB.characters[2].make_new(1))
-	
-	pass
+	inactive.push_back(DB.characters[3].make_new(1))

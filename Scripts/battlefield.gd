@@ -16,6 +16,8 @@ var allyList = [] #the list of battleActors with ally info
 var curBattleList = [] #the list of all battleActors
 var turnOrder = [] #another list of all battleActors, in turn order (may contain duplicates)
 
+var actor = null
+
 var playerTurn = false
 
 onready var cSel = get_node("charSelector")
@@ -54,12 +56,15 @@ func _ready():
 			ah[set].update_me()
 			curBattleList.append(ah[set])
 			allyList.append(ah[set])
+			ah[set].connect("currentState",self,"process_actor_state")
 			set += 1
 	set = 0
 	
 	for n in allyHolder.get_children():
 		if n.ref == null:
 			n.queue_free()
+		else:
+			n.BA_STATE = "IDLE"
 	
 	var fh = foeHolder.get_children()
 	for i in foeParty:
@@ -70,6 +75,12 @@ func _ready():
 			curBattleList.append(fh[set])
 			foeList.append(fh[set])
 			set += 1
+	
+	for n in foeHolder.get_children():
+		if n.ref == null:
+			n.queue_free()
+		else:
+			n.BA_STATE = "IDLE"
 	
 	for i in get_node("battleOptions").get_children():
 		buttons.append(i)
@@ -86,15 +97,20 @@ func _fixed_process(delta):
 	turnOrder.front().get_node("labelHolder").set_hidden(false)
 	check_button_hover()
 	
-	if check_current_turn():
-		update_char_selector(turnOrder.front())
-		enemy_attack(turnOrder.front())
-		
-	elif !check_current_turn():
-		if !select:
-			update_char_selector(turnOrder.front())
-		elif select:
-			select_target()
+	#if check_current_turn():
+	#	update_char_selector(turnOrder.front())
+	#	enemy_attack(turnOrder.front())
+	
+	#if !check_current_turn():
+	if !select:
+		if actor == null:
+			cSel.set_hidden(true)
+		elif actor != null:
+			cSel.set_hidden(false)
+			update_char_selector(actor)
+	elif select:
+		cSel.set_hidden(true)
+		select_target("FOE")
 	
 	interact = false
 	up = false
@@ -143,6 +159,8 @@ func get_actor_list(node):
 			return i
 
 func make_turn_order():
+	if !turnOrder.empty():
+		turnOrder.clear()
 	#create a custom array to hold speed values
 	var speedList = []
 	for i in curBattleList:
@@ -158,6 +176,11 @@ func make_turn_order():
 			if i.ref.SD == speedList.back():
 				turnOrder.append(i)
 				speedList.pop_back()
+	if toNextTurn != turnLength:
+		for tnx in range(0,toNextTurn):
+			turnOrder.push_back(turnOrder.front())
+			turnOrder.pop_front()
+	
 	#prints the turn order to the consol just to be sure
 	print("Turn order:")
 	for i in turnOrder:
@@ -193,16 +216,21 @@ func check_button_hover():
 			get_node("buttonLabel").set_text(i.buttonName)
 
 func advanceTurn():
-	turnOrder.front().get_node("labelHolder").set_hidden(true)
-	turnOrder.push_back(turnOrder.front())
-	turnOrder.pop_front()
-	turn_order_list()
+	#turnOrder.front().get_node("labelHolder").set_hidden(true)
+	#turnOrder.push_back(turnOrder.front())
+	#turnOrder.pop_front()
+	#turn_order_list()
+	actor.atb = 0
+	for i in curBattleList:
+		if i != actor:
+			i.BA_STATE = "IDLE"
+	#actor = null
 	toNextTurn -= 1
 	if toNextTurn <= 0:
 		turn+= 1
 		toNextTurn = turnLength
 	get_node("turnLabel").set_text(str(turn))
-	print("It is "+turnOrder.front().ref.name+"'s turn!")
+	#print("It is "+turnOrder.front().ref.name+"'s turn!")
 
 func _on_pass_pressed():
 	turnOrder.front().wait()
@@ -211,6 +239,7 @@ func _on_pass_pressed():
 func _on_attack_pressed():
 	print(turnOrder.front().ref.name + " attacking!")
 	select = true
+	#select_target("FOE")
 
 func check_current_turn():
 	var fof = false
@@ -219,25 +248,45 @@ func check_current_turn():
 			fof = true
 	return fof
 
-func select_target():
-	if up:
-		if tSel > 0:
-			tSel -= 1
-		else:
+func select_target(selTarget):
+	#select = true
+	if selTarget == "FOE":
+		if tSel > foeList.size()-1:
 			tSel = foeList.size()-1
-		print(str(tSel)+" "+str(foeList[tSel].get_name()))
-	if down:
-		if tSel < foeList.size()-1:
-			tSel += 1
-		else:
-			tSel = 0
-		print(str(tSel)+" "+str(foeList[tSel].get_name()))
-	update_char_selector(foeList[tSel])
-	
-	if interact:
-		turnOrder.front().attack(foeList[tSel])
-		select = false
-		advanceTurn()
+		if up:
+			if tSel > 0:
+				tSel -= 1
+			else:
+				tSel = foeList.size()-1
+		if down:
+			if tSel < foeList.size()-1:
+				tSel += 1
+			else:
+				tSel = 0
+		update_char_selector(foeList[tSel])
+		
+		if interact and !foeList[tSel].defeated:
+			turnOrder.front().attack(foeList[tSel])
+			select = false
+			#advanceTurn()
+	elif selTarget == "ALLY":
+		if up:
+			if tSel > 0:
+				tSel -= 1
+			else:
+				tSel = allyList.size()-1
+		if down:
+			if tSel < allyList.size()-1:
+				tSel += 1
+			else:
+				tSel = 0
+		update_char_selector(allyList[tSel])
+		
+		if interact and !allyList[tSel].defeated:
+			turnOrder.front().attack(allyList[tSel])
+			select = false
+			get_node("battleOptions").set_hidden(true)
+			#advanceTurn()
 
 func enemy_attack(enemy):
 	#'enemy' accepts a battleActor instance
@@ -246,3 +295,14 @@ func enemy_attack(enemy):
 		enemy.attack(allyList[round(rand_range(0,allyList.size()-1))])
 	advanceTurn()
 
+func process_actor_state(state):
+	if state == "ACTION":
+		for i in curBattleList:
+			if i.BA_STATE == state and actor == null:
+				print(i.ref.name + " is ready to act!")
+				actor = i
+			else:
+				i.BA_STATE = "HOLD"
+		get_node("battleOptions").set_hidden(false)
+	elif state == "RETURN":
+		advanceTurn()

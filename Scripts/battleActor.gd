@@ -1,18 +1,21 @@
-extends Node2D
+	extends Node2D
 
 onready var ref
 var defeated = false
+var BA_STATE = "HOLD" #IDLE | ACTION | ATTACK | RETURN | HOLD | DEFEATED
+signal currentState(state)
 
 var damageText = preload("res://Scenes/damageTaken.xml")
 
 onready var anim = get_node("sBattle/AnimationPlayer")
+onready var atb_p = get_node("atb")
 
-#export(String, "Magic", "Melee", "Ranged") var AttackType
-#export(String, MULTILINE) var UnitName = ''
-#export(Texture) var UnitImage
+var startPos
+var atb = 0
 
 #attacks the target which is another unit
 func attack(target):
+	BA_STATE = "ATTACK"
 	var attackPower = round(rand_range(ref.minAtk,ref.maxAtk))
 
 	var absorbed = 0 #round(attackPower)*(target.Armor*0.1))
@@ -23,7 +26,7 @@ func attack(target):
 	var dodged = false
 	var critical = false
 	
-	var attack = get_node("sBattle/AnimationPlayer").get_animation("attack")
+	var attack = anim.get_animation("attack")
 	
 	var ch = round(rand_range(1,100))
 	if ch < critChance:
@@ -34,11 +37,12 @@ func attack(target):
 	#if ch < target.ref.DG*0.1:
 	#	totalDamage = 0
 	#	dodged = true
-	attack.track_insert_key(0,2,target.get_pos()-get_pos())
+	attack.track_insert_key(0,0.5,Vector2((get_pos().x+target.get_pos().x)/2,((get_pos().y+target.get_pos().y)/2)-32)-get_pos())
+	attack.track_insert_key(0,1,target.get_pos()-get_pos())
 	anim.play("attack")
 	
 	target.takeDamage(totalDamage,critical,dodged)
-	consumeEnergy(1)
+	#return [target,totalDamage,critical]
 
 func consumeEnergy(amount):
 	ref.cEN = ref.cEN - amount
@@ -85,14 +89,27 @@ func die():
 
 func _ready():
 	randomize()
-	#ref._reset_stats("ALL")
-	#ref.SD = round(rand_range(1,100))
-	#print(ref.name + "'s speed is now "+str(ref.SD))
-	#get_node("labelHolder/barHP").set_max(ref.HP)
-	#get_node("labelHolder/barEG").set_max(ref.EN)
-	#get_node("labelHolder/Name").set_text(ref.name)
-	#update_statLabels()
-	set_process_input(true)
+	startPos = get_pos()
+	set_fixed_process(true)
+
+func _fixed_process(delta):
+	process_state()
+
+func process_state():
+	if BA_STATE == "IDLE":
+		if anim.get_current_animation() != "idle":
+			anim.play("idle")
+		if atb+(ref.SD*0.1) < 100:
+			atb += ref.SD*0.1
+		elif atb+(ref.SD*0.1) >= 100:
+			BA_STATE = "ACTION"
+			emit_signal("currentState",BA_STATE)
+			#print(BA_STATE)
+		atb_p.set_value(atb)
+	elif BA_STATE == "RETURN":
+		emit_signal("currentState",BA_STATE)
+		anim.get_animation("return").track_insert_key(0,0,get_node("sBattle").get_pos())
+		anim.play("return")
 
 func update_me():
 	get_node("sBattle").set_texture(ref.battleSprite)
@@ -100,9 +117,6 @@ func update_me():
 	get_node("labelHolder/barEG").set_max(ref.EN)
 	get_node("labelHolder/Name").set_text(ref.name)
 	update_statLabels()
-
-func _on_hurtSenra_pressed():
-	takeDamage(10,false)
 
 func update_statLabels():
 	get_node("labelHolder/barHP").set_value(ref.cHP)
@@ -117,9 +131,8 @@ func update_statLabels():
 func show_labels(t):
 	get_node("labelHolder").set_hidden(t)
 
-func _on_hoverArea_mouse_enter():
-	get_node("labelHolder").set_hidden(false)
+func attackDone():
+	BA_STATE = "RETURN"
 
-
-func _on_hoverArea_mouse_exit():
-	get_node("labelHolder").set_hidden(true)
+func returnDone():
+	BA_STATE = "IDLE"

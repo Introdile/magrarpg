@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resource_file type="PackedScene" subresource_count="13" version="2.1" version_name="Godot Engine v2.1.4.stable.official">
+	<ext_resource path="res://Scenes/PartyItem.xml" type="PackedScene" index="2"></ext_resource>
 	<ext_resource path="res://Fonts/Introdile.ttf" type="DynamicFontData" index="5"></ext_resource>
-	<ext_resource path="res://Sprites/portraitselect.png" type="Texture" index="3"></ext_resource>
+	<ext_resource path="res://Sprites/partybg.png" type="Texture" index="1"></ext_resource>
 	<ext_resource path="res://Sprites/partyList.png" type="Texture" index="6"></ext_resource>
 	<ext_resource path="res://Sprites/portraits.png" type="Texture" index="4"></ext_resource>
-	<ext_resource path="res://Sprites/partybg.png" type="Texture" index="1"></ext_resource>
+	<ext_resource path="res://Sprites/portraitselect.png" type="Texture" index="3"></ext_resource>
 	<ext_resource path="res://Scripts/Party.gd" type="Script" index="0"></ext_resource>
-	<ext_resource path="res://Scenes/PartyItem.xml" type="PackedScene" index="2"></ext_resource>
 	<resource type="Animation" path="local://3">
 		<string name="resource/name"> "pulse" </string>
 		<real name="length"> 1 </real>
