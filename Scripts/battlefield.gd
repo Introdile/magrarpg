@@ -64,7 +64,7 @@ func _ready():
 		if n.ref == null:
 			n.queue_free()
 		else:
-			n.BA_STATE = "IDLE"
+			n.changeState("IDLE")
 	
 	var fh = foeHolder.get_children()
 	for i in foeParty:
@@ -74,20 +74,20 @@ func _ready():
 			fh[set].update_me()
 			curBattleList.append(fh[set])
 			foeList.append(fh[set])
+			fh[set].connect("currentState",self,"process_actor_state")
 			set += 1
 	
 	for n in foeHolder.get_children():
 		if n.ref == null:
 			n.queue_free()
 		else:
-			n.BA_STATE = "IDLE"
+			n.changeState("IDLE")
 	
 	for i in get_node("battleOptions").get_children():
 		buttons.append(i)
 	
 	turnLength = curBattleList.size()
 	toNextTurn = turnLength
-	print(str(foeList.size()))
 	#clear_pos_nodes()
 	make_turn_order()
 	set_process_unhandled_input(true)
@@ -150,13 +150,13 @@ func _unhandled_input(event):
 	elif event.is_action_released("ui_interact"):
 		interact = false
 
-func get_actor_list(node):
+func is_enemy(node):
 	for i in get_node("allyHolder").get_children():
-		if i.get_name() == node:
-			return i
+		if i.get_name() == node.get_name():
+			return false
 	for i in get_node("foeHolder").get_children():
-		if i.get_name() == node:
-			return i
+		if i.get_name() == node.get_name():
+			return true
 
 func make_turn_order():
 	if !turnOrder.empty():
@@ -288,12 +288,16 @@ func enemy_attack(enemy):
 
 func process_actor_state(state):
 	if state == "ACTION":
+		print("Hello, it's action time!")
 		for i in curBattleList:
 			if i.BA_STATE == state and actor == null:
 				print(i.ref.name + " is ready to act!")
 				actor = i
 			else:
 				i.changeState("HOLD")
-		get_node("battleOptions").set_hidden(false)
+		if is_enemy(actor):
+			enemy_attack(actor)
+		else:
+			get_node("battleOptions").set_hidden(false)
 	elif state == "ATTACK":
 		advanceTurn()

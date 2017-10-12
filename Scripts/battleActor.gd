@@ -69,6 +69,7 @@ func takeDamage(amount,critical,dodged):
 		else:
 			print(ref.name + " has taken "+str(amount)+" damage!")
 	else:
+		changeState("DEFEATED")
 		die()
 	if ref.cHP < 0:
 		ref.cHP = 0
@@ -109,7 +110,6 @@ func process_state():
 		elif atb+(ref.SD*0.05) >= 100:
 			changeState("ACTION")
 			emit_signal("currentState",BA_STATE)
-			#print(BA_STATE)
 		atb_p.set_value(atb)
 	elif BA_STATE == "RETURN":
 		if anim.get_current_animation() != "return":
@@ -137,16 +137,21 @@ func update_statLabels():
 	get_node("labelHolder/DG").set_text(str(ref.DG))
 	get_node("labelHolder/SD").set_text(str(ref.SD))
 
-func changeState(state):
-	BA_LAST_STATE = BA_STATE
-	BA_STATE = state
-	sigOnce = false
-	print(ref.name + " changes state to " + BA_STATE)
+func changeState(state,def=false):
+	if def:
+		BA_LAST_STATE = BA_STATE
+		BA_STATE = state
+		sigOnce = false
+		print(ref.name + " changes state to " + BA_STATE)
+	elif !def:
+		if BA_STATE != "DEFEATED":
+			BA_LAST_STATE = BA_STATE
+			BA_STATE = state
+			sigOnce = false
+			print(ref.name + " changes state to " + BA_STATE)
 
 func revertState():
 	changeState(BA_LAST_STATE)
-	sigOnce = false
-	print(ref.name + " reverts state to " + BA_STATE)
 
 func show_labels(t):
 	get_node("labelHolder").set_hidden(t)
