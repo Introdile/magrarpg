@@ -74,6 +74,7 @@ func make_new(level):
 		skill.power = i.power
 		skill.cost = i.cost
 		skill.cooldown = i.cooldown
+		skill.threat = i.threat
 		n.skills.push_back(skill)
 	
 	n._reset_stats("ALL")

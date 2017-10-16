@@ -19,6 +19,7 @@ static func prepareBattlers(n,p,l,f=false):
 			
 			if !f: damn.set_name(c.name)
 			else: damn.set_name(c.name+str(set))
+			damn.numInList = set
 			
 			damn.set_pos(Vector2(x,y))
 			damn.idle = c.battleSprite
@@ -37,6 +38,7 @@ static func prepareBattlers(n,p,l,f=false):
 			
 			if !f: damn.set_name(c.name)
 			else: damn.set_name(c.name+str(set))
+			damn.numInList = set
 			
 			damn.get_node("bSprite").set_flip_h(true)
 			damn.set_pos(Vector2(x,y))
@@ -46,6 +48,7 @@ static func prepareBattlers(n,p,l,f=false):
 			n.add_child(damn)
 			x -= 48
 			y += 64
+			set += 1
 
 static func listPlayerMoves(p,c):
 	#p takes the panel node
@@ -168,6 +171,7 @@ static func calculateDamage(a,s,t,e=true):
 	var damMod = s.get_power()*0.1
 	var damMin = a.minAtk*damMod
 	var damMax = a.maxAtk*damMod
+	var threat = s.get_threat()
 	dam = round(rand_range(damMin,damMax))
 	
 	
@@ -180,10 +184,12 @@ static func calculateDamage(a,s,t,e=true):
 			print("Critical strike!")
 			#TODO: use weapon's critical strike multiplier instead
 			dam = dam*1.5
+			threat = threat*1.5
 		
 		if randChance(t.get_dodge_chance()):
 			print("Dodge!")
 			dam = dam*0.75
+			threat = threat*0.5
 		
 		if randChance(t.get_parry_chance()):
 			print("Parry!")
@@ -204,6 +210,7 @@ static func calculateDamage(a,s,t,e=true):
 			print("Critical strike!")
 			#TODO: use weapon's critical strike multiplier instead
 			dam = dam*1.5
+			threat = threat*1.5
 		
 		if randChance(t.get_dodge_chance()):
 			print("Dodged!")
@@ -225,10 +232,12 @@ static func calculateDamage(a,s,t,e=true):
 			dam = round(rand_range(mmnDam,mmxDam))
 		elif !e:
 			dam = round(rand_range(mmnDam,mmxDam)) * 0.5
+			threat = threat*0.1
 		#ward chance + reflect
 	
 	print(a.name+"'s "+s.get_name()+" dealt "+str(dam)+" damage to "+t.name)
 	
+	t.threaten(GD.party.find(a),threat)
 	a.cEN = a.cEN-s.get_cost()
 	return round(dam)
 
@@ -255,7 +264,6 @@ static func spawnText(w,d,c):
 	#d takes an amount of damage to display
 	#c takes whether or not damage was a crit
 	var dTxt = preload("res://LOGIC/BATTLE/battleDam.tscn").instance()
-	print("hewwo")
 	dTxt.set_text(str(d))
 	dTxt.get_node("AnimationPlayer").play("float")
 	w.add_child(dTxt)

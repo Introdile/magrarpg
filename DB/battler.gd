@@ -20,28 +20,35 @@ export(Texture) var defeat
 export(int) var defeat_frames
 
 signal actor_clicked(name,click)
+var numInList = 0
 
 onready var b = get_node("bSprite")
 onready var a = get_node("bSprite/anim")
 onready var m = get_node("me")
 
 func _ready():
+	randomize()
 	prepareme()
 
 func prepareme():
 	var i_a = [nidle,idle,idle_frames]
 	var a1_a = [nattack1,attack1,attack1_frames]
 	var c1_a = [ncast1,cast1,cast1_frames]
+	var d_a = [ndefeat,defeat,defeat_frames]
+	
 	if i_a[1] != null:
 		setUpAnimations(i_a)
 	if a1_a[1] != null:
 		setUpAnimations(a1_a)
 	if c1_a[1] != null:
 		setUpAnimations(c1_a)
+	if  d_a[1] != null:
+		setUpAnimations(d_a)
 	
 	if get_node("bSprite/anim").has_animation("idle"):
 		get_node("bSprite/anim").play("idle")
-		get_node("bSprite").frame = round(rand_range(0,get_node("bSprite").hframes-1))
+		var iframe = round(rand_range(0,get_node("bSprite").hframes-1))
+		get_node("bSprite/anim").seek(iframe,true)
 	
 	get_node("bSprite/anim").set_speed(6)
 
@@ -66,7 +73,6 @@ func setUpAnimations(aa):
 		nAnim.track_insert_key(x,i,i)
 	if aa[0] == "idle":
 		nAnim.set_loop(true)
-	
 	get_node("bSprite/anim").add_animation(aa[0],nAnim)
 
 func slideToTarget(des,deltav,spd=250):

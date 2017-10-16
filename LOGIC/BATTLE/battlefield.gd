@@ -11,6 +11,7 @@ enum BattleStates{
 	CALCDAMAGE,
 	SELECT,
 	NEXTTURN,
+	PASS,
 	LOSE,
 	WIN
 }
@@ -57,6 +58,8 @@ func _ready():
 	
 	for i in range(0,foes.size()):
 		foes[i].SD = round(rand_range(15,25))
+		for ii in range(allies.size()):
+			foes[i].threatened[ii] = 1
 	
 	for i in foes:
 		battlers.push_back(i)
@@ -140,17 +143,17 @@ func _fixed_process(delta):
 		sel.set_hidden(true)
 		if battleFunc.isCurrentTurnEnemy(allies,battlers):
 			var ab = round(rand_range(0,cA.skills.size()-1))
+			#print(allies[cA.getHighestThreat()].name+" has the most threat against me!")
 			if cA.cEN > cA.skills[ab].get_cost():
-				var dmg = battleFunc.calculateDamage(cA,cA.skills[ab],allies[0])
-				battleFunc.spawnText(get_node("ALLY/"+allies[0].name),dmg,false)
-				battleFunc.updateBars(get_node("PlayerPanels"),allies[0],"hp")
+				var dmg = battleFunc.calculateDamage(cA,cA.skills[ab],cAT)
+				battleFunc.spawnText(get_node("ALLY/"+cAT.name),dmg,false)
+				battleFunc.updateBars(get_node("PlayerPanels"),cAT,"hp")
 				cA.cEN -= cA.skills[ab].get_cost()
-				allies[0].cHP -= dmg
-				if allies[0].cHP <= 0:
-					allies[0].cHP = 0
-					allies[0].defeat()
-				else:
-					changeState(BattleStates.NEXTTURN)
+				cAT.cHP -= dmg
+				if cAT.cHP <= 0:
+					cAT.cHP = 0
+					cAT.defeat()
+				changeState(BattleStates.NEXTTURN)
 		elif !battleFunc.isCurrentTurnEnemy(allies,battlers):
 			var dmg = battleFunc.calculateDamage(cA,playerUsedAbility,cAT)
 			battleFunc.spawnText(get_node("FOE/"+cAT.name),dmg,false)
@@ -158,24 +161,32 @@ func _fixed_process(delta):
 			if cAT.cHP <= 0:
 				cAT.cHP = 0
 				cAT.defeat()
-			else:
-				changeState(BattleStates.NEXTTURN)
+				get_node("FOE/"+cAT.name).a.play("defeat")
+				print(cAT.name+" is defeated!")
+			changeState(BattleStates.NEXTTURN)
 	elif currentState == BattleStates.SELECT:
-		sel.set_hidden(false)
-		if sel.get_pos().distance_to(selDes) > 5: moveObj(sel,selDes,delta)
-		if lastState == BattleStates.ALLYCHOICE:
-			if playerUsedAbility.get_cost() > cA.cEN:
-				print("Not enough energy to use "+playerUsedAbility.name)
-				changeState(lastState)
-		#make "Sel" appear
-		#make "Sel" hover over a target
-		pass
+		if !battleFunc.isCurrentTurnEnemy(allies,battlers):
+			sel.set_hidden(false)
+			if sel.get_pos().distance_to(selDes) > 5: moveObj(sel,selDes,delta)
+			if lastState == BattleStates.ALLYCHOICE:
+				if playerUsedAbility.get_cost() > cA.cEN:
+					print("Not enough energy to use "+playerUsedAbility.name)
+					changeState(lastState)
+		else:
+			#make enemies select a target and an ability
+			#cAT = allies[cA.getHighestThreat()]
+			print(str(cA.getHighestThreat()))
+			if cA.getHighestThreat().size() > 1:
+				cAT = allies[0]
+			else:
+				cAT = allies[cA.getHighestThreat().front()]
+			changeState(BattleStates.CALCDAMAGE)
 	elif currentState == BattleStates.NEXTTURN:
 		if battleFunc.checkForDefeat(foes):
 			changeState(BattleStates.WIN)
 		elif battleFunc.checkForDefeat(allies):
 			changeState(BattleStates.LOSE)
-		
+		print(cA.name+" threat values: "+str(cA.threatened))
 		toNextTurn -= 1
 		if toNextTurn <= 0:
 			turn += 1
@@ -185,11 +196,16 @@ func _fixed_process(delta):
 		battlers.push_back(battlers.front())
 		battlers.pop_front()
 		cA = battlers.front()
+		if cA.defeated:
+			print(cA.name+" is defeated. Passing...")
+			changeState(BattleStates.PASS)
 		get_node("PlayerPanels/Actions/Name").set_text(cA.name+"'s turn!")
 		if battleFunc.isCurrentTurnEnemy(allies,battlers):
 			changeState(BattleStates.FOECHOICE)
 		else:
 			changeState(BattleStates.ALLYCHOICE)
+	elif currentState == BattleStates.PASS:
+		changeState(BattleStates.NEXTTURN)
 	elif currentState == BattleStates.LOSE:
 		if !setOnce:
 			print("*vibeo games voice* YOU LOSE")
@@ -201,8 +217,10 @@ func _fixed_process(delta):
 
 func moveObj(obj,des,deltav=1,spd=500):
 	#des takes a vector2
-	if obj.get_pos().distance_to(des) > 100:
-		spd = spd*2
+	if obj.get_pos().distance_to(des) > 200:
+		spd = spd*5
+	if obj.get_pos().distance_to(des) > 50:
+		spd = spd*3
 	var angle = obj.get_angle_to(des)
 	var vel = Vector2(0,0)
 	vel.x = spd*sin(angle)
@@ -211,14 +229,13 @@ func moveObj(obj,des,deltav=1,spd=500):
 	obj.move(vel*deltav)
 
 func actorClicked(name,click):
-	if currentState == BattleStates.SELECT:
-		if battleFunc.isNameEnemy(name,allies):
-			selDes = get_node("FOE/"+name).get_pos()
-		else:
-			selDes = get_node("ALLY/"+name).get_pos()
+	if currentState == BattleStates.SELECT and !battleFunc.isCurrentTurnEnemy(allies,battlers):
 		
 		if playerUsedAbility.get_ttype() == CONST.SK_TARGET_FOES:
-			if click:
+			if battleFunc.isNameEnemy(name,allies) and !foes[get_node("FOE/"+name).numInList].defeated:
+				selDes = get_node("FOE/"+name).get_pos()
+			
+			if click and !foes[get_node("FOE/"+name).numInList].defeated:
 				for i in foes:
 					if i.name == name:
 						cAT = i
@@ -226,7 +243,7 @@ func actorClicked(name,click):
 						sel.set_hidden(true)
 
 func timesUp():
-	changeState(BattleStates.CALCDAMAGE)
+	changeState(BattleStates.SELECT)
 	get_node("waitTimer").queue_free()
 	setOnce = false
 

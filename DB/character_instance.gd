@@ -62,6 +62,9 @@ var RES = 0 #Current Resistance
 
 var rEN = 1 #Energy regen
 
+#ENEMY ONLY
+var threatened = [0,0,0,0,0]
+
 var minAtk
 var maxAtk
 
@@ -70,6 +73,7 @@ class move_instance:
 	var power = 0
 	var cost = 0
 	var cooldown = 0
+	var threat = 0
 	
 	func get_name():
 		return DB.abilities[id].name
@@ -85,6 +89,9 @@ class move_instance:
 	
 	func get_cooldown():
 		return DB.abilities[id].cooldown
+	
+	func get_threat():
+		return DB.abilities[id].threat
 	
 	func get_type():
 		return DB.abilities[id].type
@@ -157,6 +164,41 @@ func get_parry_chance(): return PR*0.01
 func get_echo_chance(): return EC*0.01
 
 func get_reflect_chance(): return RF*0.01
+
+func threaten(n,t):
+	for i in range(threatened.size()-1):
+		#if the current iteration of the threatened value is initialized (aka is above 0)
+		#it checks whether or not the location of the iterated value is equal to the one provided (n)
+		#if it is, it will increase the iterated value by the given value (t)
+		#if it is not, it will check to make sure that the given value (t) is above 0 (to avoid the value becoming uninitialized)
+		#if the given value (t) IS above 0, it will reduce the current iterated value by half of the given value
+		if threatened[i] > 0:
+			if i != n and t > 0:
+				if (threatened[i]-(t*0.5)) <= 0:
+					threatened[i] = 1
+				else: 
+					threatened[i] -= t*0.5
+				print(name+" lost "+str(t*0.5)+" threat at place "+str(i)+"!")
+			elif i == n:
+				if threatened[i]+t <= 0:
+					threatened[i] = 1
+				else:
+					threatened[i] += t
+				print(name+" was threatened by "+str(t)+" at place "+str(n)+"!")
+
+func getHighestThreat():
+	print("owo")
+	var t = 0
+	var tc = []
+	for i in threatened:
+		if i > t:
+			t = i
+	for i in threatened:
+		if i == t:
+			tc.push_back(1)
+		else:
+			tc.push_back(0)
+	return tc
 
 func defeat():
 	defeated = true

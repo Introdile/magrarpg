@@ -9,3 +9,4 @@ export(int, "Foes", "Allies", "Field", "All") var targetType = 0
 export(int) var power = 0
 export(int) var cost = 0
 export(int) var cooldown = 0
+export(int) var threat = 5

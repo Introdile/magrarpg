@@ -113,6 +113,7 @@ targetType = 0
 power = 10
 cost = 5
 cooldown = 0
+threat = 5
 
 [node name="Cantrip" type="Node" parent="Abilities"]
 
@@ -125,6 +126,7 @@ targetType = 0
 power = 10
 cost = 5
 cooldown = 0
+threat = 5
 
 [node name="$MAGRA" type="Node" parent="Abilities"]
 
@@ -139,6 +141,7 @@ targetType = 0
 power = 15
 cost = 5
 cooldown = 1
+threat = 5
 
 [node name="$SENRA" type="Node" parent="Abilities"]
 
@@ -153,6 +156,7 @@ targetType = 0
 power = 25
 cost = 15
 cooldown = 3
+threat = 5
 
 [node name="$REZISA" type="Node" parent="Abilities"]
 
@@ -167,5 +171,6 @@ targetType = 0
 power = 20
 cost = 10
 cooldown = 2
+threat = 15
 
 
