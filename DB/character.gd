@@ -3,13 +3,14 @@ extends Node
 export(int) var id = 0
 export(String) var name = ""
 export(String) var spec = ""
-export(int) var portrait = 0
+export(Array) var portrait
 export(Texture) var battleSprite
 
 export(String,MULTILINE) var desc = ""
 export(String) var shortDesc = ""
 
-export(Array) var skillList = [] #maybe?
+export(Array) var learn_skill_ids = []
+export(Array) var learn_levels = []
 
 #Stats
 #only permament stat increases (leveling up, perm stat up items?) will modify the base (exported) values
@@ -30,7 +31,7 @@ var rEN = 1 #Energy regen
 var minAtk
 var maxAtk
 
-var char_instance_sc = preload("res://DB/char_instance.gd")
+var char_instance_sc = preload("res://DB/character_instance.gd")
 
 func _ready():
 	pass
@@ -58,5 +59,22 @@ func make_new(level):
 	n._EC = _EC
 	n._DG = _DG
 	n._SD = _SD
+	
+	var learnSkills = []
+	
+	for i in range(learn_skill_ids.size()):
+		if learn_levels[i] <= level:
+			for x in DB.abilities:
+				if x.id == learn_skill_ids[i]:
+					learnSkills.push_back(x)
+	
+	for i in learnSkills:
+		var skill = char_instance_sc.move_instance.new()
+		skill.id = i.id
+		skill.power = i.power
+		skill.cost = i.cost
+		skill.cooldown = i.cooldown
+		n.skills.push_back(skill)
+	
 	n._reset_stats("ALL")
 	return n
