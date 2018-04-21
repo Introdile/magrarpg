@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=1]
+[gd_scene load_steps=9 format=1]
 
 [ext_resource path="res://DB/DB.gd" type="Script" id=1]
 [ext_resource path="res://DB/character.gd" type="Script" id=2]
-[ext_resource path="res://ASSETS/BATTLE SPRITES/magraPlaceholder.png" type="Texture" id=3]
+[ext_resource path="res://ASSETS/BATTLE SPRITES/explorer_sheet.png" type="Texture" id=3]
 [ext_resource path="res://ASSETS/BATTLE SPRITES/senra_idle_sheet.png" type="Texture" id=4]
 [ext_resource path="res://ASSETS/BATTLE SPRITES/rezisaPlaceholder.png" type="Texture" id=5]
 [ext_resource path="res://ASSETS/BATTLE SPRITES/negamagraPlaceholder.png" type="Texture" id=6]
 [ext_resource path="res://DB/ability.gd" type="Script" id=7]
+[ext_resource path="res://DB/spec.gd" type="Script" id=8]
 
 [node name="DB" type="Node"]
 
@@ -19,63 +20,63 @@ script/script = ExtResource( 1 )
 script/script = ExtResource( 2 )
 id = 1
 name = "Magra"
-spec = "Gunslinger"
+spec = 0
 portrait = [ Image() ]
 battleSprite = ExtResource( 3 )
 desc = "A crocodilian treasure hunter."
 shortDesc = ""
 learn_skill_ids = [ 0, 2 ]
 learn_levels = [ 1, 1 ]
-_HP = 100
-_EN = 100
-_MG = 10
-_AM = 10
-_PT = 0
-_EC = 0
-_DG = 20
-_SD = 20
+_HP_apt = 0
+_EN_apt = 0
+_MG_apt = 0
+_AM_apt = 0
+_PT_apt = 0
+_EC_apt = 0
+_DG_apt = 0
+_SD_apt = 0
 
 [node name="Senra" type="Node" parent="Characters"]
 
 script/script = ExtResource( 2 )
 id = 2
 name = "Senra"
-spec = "Apothecary"
+spec = 0
 portrait = [ Image() ]
 battleSprite = ExtResource( 4 )
 desc = "A crocodilian treasure hunter."
 shortDesc = ""
 learn_skill_ids = [ 1, 3 ]
 learn_levels = [ 1, 1 ]
-_HP = 100
-_EN = 150
-_MG = 5
-_AM = 5
-_PT = 10
-_EC = 10
-_DG = 5
-_SD = 10
+_HP_apt = 0
+_EN_apt = 0
+_MG_apt = 0
+_AM_apt = 0
+_PT_apt = 0
+_EC_apt = 0
+_DG_apt = 0
+_SD_apt = 0
 
 [node name="Rezisa" type="Node" parent="Characters"]
 
 script/script = ExtResource( 2 )
 id = 3
 name = "Rezisa"
-spec = "Beserker"
+spec = 0
 portrait = [ Image() ]
 battleSprite = ExtResource( 5 )
 desc = "A crocodilian treasure hunter."
 shortDesc = ""
 learn_skill_ids = [ 0, 4 ]
 learn_levels = [ 1, 1 ]
-_HP = 150
-_EN = 100
-_MG = 15
-_AM = 2
-_PT = 5
-_EC = 2
-_DG = 6
-_SD = 7
+_HP_apt = 0
+_EN_apt = 0
+_MG_apt = 0
+_AM_apt = 0
+_PT_apt = 0
+_EC_apt = 0
+_DG_apt = 0
+_SD_apt = 0
 
 [node name="Foes" type="Node" parent="."]
 
@@ -84,21 +85,21 @@ _SD = 7
 script/script = ExtResource( 2 )
 id = 0
 name = "Nega-Magra"
-spec = "Doppleganger"
+spec = 0
 portrait = null
 battleSprite = ExtResource( 6 )
 desc = ""
 shortDesc = ""
 learn_skill_ids = [ 0, 10 ]
 learn_levels = [ 1, 1 ]
-_HP = 100
-_EN = 100
-_MG = 10
-_AM = 10
-_PT = 10
-_EC = 10
-_DG = 5
-_SD = 5
+_HP_apt = 0
+_EN_apt = 0
+_MG_apt = 0
+_AM_apt = 0
+_PT_apt = 0
+_EC_apt = 0
+_DG_apt = 0
+_SD_apt = 0
 
 [node name="Abilities" type="Node" parent="."]
 
@@ -138,7 +139,7 @@ id = 2
 desc = "A deadly pistol shot."
 type = 1
 targetType = 0
-power = 15
+power = 100
 cost = 5
 cooldown = 1
 threat = 5
@@ -160,17 +161,44 @@ threat = 5
 
 [node name="$REZISA" type="Node" parent="Abilities"]
 
-[node name="Rend" type="Node" parent="Abilities"]
+[node name="Hew" type="Node" parent="Abilities"]
 
 script/script = ExtResource( 7 )
-name = "Rend"
+name = "Hew"
 id = 4
 desc = "A mighty chop!"
 type = 0
-targetType = 0
+targetType = 1
 power = 20
 cost = 10
 cooldown = 2
 threat = 15
+
+[node name="Spec" type="Node" parent="."]
+
+[node name="Explorer" type="Node" parent="Spec"]
+
+script/script = ExtResource( 8 )
+id = 0
+name = "Explorer"
+type = "Damage"
+desc = "A specialization."
+_HP_grw = 1
+_EN_grw = 2
+_MG_grw = 4
+_AM_grw = 1
+_PT_grw = 0
+_EC_grw = 0
+_DG_grw = 3
+_SD_grw = 2
+skill_list = null
+skill_learn_level = null
+upgrade_levels = null
+upgrade_specs = null
+equip_type = 0
+
+[node name="Gardener" type="Node" parent="Spec"]
+
+[node name="Mercenary" type="Node" parent="Spec"]
 
 

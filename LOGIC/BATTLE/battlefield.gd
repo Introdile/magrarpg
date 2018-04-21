@@ -31,7 +31,7 @@ var battlers = []
 #Battle variables
 var playerUsedAbility
 var cA #current actor aka the person who's turn it is
-var cAT #current actor target
+var cAT = [] #current actor target
 
 #TURN COUNT
 onready var nturn = get_node("TURN")
@@ -57,7 +57,7 @@ func _ready():
 	foes[2].name = foes[2].name+" 3"
 	
 	for i in range(0,foes.size()):
-		foes[i].SD = round(rand_range(15,25))
+		#foes[i]._stat[7] = round(rand_range(15,25))
 		for ii in range(allies.size()):
 			foes[i].threatened[ii] = 1
 	
@@ -67,8 +67,9 @@ func _ready():
 	turnLength = battlers.size()
 	toNextTurn = turnLength
 	for n in battlers:
-		print(n.name+" "+str(n.SD))
+		print(n.name+" "+str(n._stat[7]))
 	set_fixed_process(true)
+	set_process_input(true)
 
 func _fixed_process(delta):
 	if pip.get_pos().distance_to(pipDes) > 5:
@@ -113,8 +114,9 @@ func _fixed_process(delta):
 						if i.get_name() == n.get_name():
 							print(cA.name + " used " + n.get_name()+"!")
 							playerUsedAbility = n
-							print(str(playerUsedAbility.get_ttype()))
-					changeState(BattleStates.SELECT)
+					if playerUsedAbility.get_ttype() == CONST.SK_TARGET_FOES:
+						changeState(BattleStates.SELECT)
+					
 					setOnce = false
 					for x in pActions.get_children():
 						x.queue_free()
@@ -143,26 +145,25 @@ func _fixed_process(delta):
 		sel.set_hidden(true)
 		if battleFunc.isCurrentTurnEnemy(allies,battlers):
 			var ab = round(rand_range(0,cA.skills.size()-1))
-			#print(allies[cA.getHighestThreat()].name+" has the most threat against me!")
 			if cA.cEN > cA.skills[ab].get_cost():
-				var dmg = battleFunc.calculateDamage(cA,cA.skills[ab],cAT)
-				battleFunc.spawnText(get_node("ALLY/"+cAT.name),dmg,false)
-				battleFunc.updateBars(get_node("PlayerPanels"),cAT,"hp")
+				var dmg = battleFunc.calculateDamage(cA,cA.skills[ab],cAT[0])
+				battleFunc.spawnText(get_node("ALLY/"+cAT[0].name),dmg,false)
+				battleFunc.updateBars(get_node("PlayerPanels"),cAT[0],"hp")
 				cA.cEN -= cA.skills[ab].get_cost()
-				cAT.cHP -= dmg
-				if cAT.cHP <= 0:
-					cAT.cHP = 0
-					cAT.defeat()
+				cAT[0].cHP -= dmg
+				if cAT[0].cHP <= 0:
+					cAT[0].cHP = 0
+					cAT[0].defeat()
 				changeState(BattleStates.NEXTTURN)
 		elif !battleFunc.isCurrentTurnEnemy(allies,battlers):
-			var dmg = battleFunc.calculateDamage(cA,playerUsedAbility,cAT)
-			battleFunc.spawnText(get_node("FOE/"+cAT.name),dmg,false)
-			cAT.cHP -= dmg
-			if cAT.cHP <= 0:
-				cAT.cHP = 0
-				cAT.defeat()
-				get_node("FOE/"+cAT.name).a.play("defeat")
-				print(cAT.name+" is defeated!")
+			var dmg = battleFunc.calculateDamage(cA,playerUsedAbility,cAT[0])
+			battleFunc.spawnText(get_node("FOE/"+cAT[0].name),dmg,false)
+			cAT[0].cHP -= dmg
+			if cAT[0].cHP <= 0:
+				cAT[0].cHP = 0
+				cAT[0].defeat()
+				get_node("FOE/"+cAT[0].name).a.play("defeat")
+				print(cAT[0].name+" is defeated!")
 			changeState(BattleStates.NEXTTURN)
 	elif currentState == BattleStates.SELECT:
 		if !battleFunc.isCurrentTurnEnemy(allies,battlers):
@@ -174,19 +175,14 @@ func _fixed_process(delta):
 					changeState(lastState)
 		else:
 			#make enemies select a target and an ability
-			#cAT = allies[cA.getHighestThreat()]
-			print(str(cA.getHighestThreat()))
-			if cA.getHighestThreat().size() > 1:
-				cAT = allies[0]
-			else:
-				cAT = allies[cA.getHighestThreat().front()]
+			cAT.push_back(allies[cA.getHighestThreat()[round(rand_range(0,cA.getHighestThreat().size()-1))]])
 			changeState(BattleStates.CALCDAMAGE)
 	elif currentState == BattleStates.NEXTTURN:
+		cAT.clear()
 		if battleFunc.checkForDefeat(foes):
 			changeState(BattleStates.WIN)
 		elif battleFunc.checkForDefeat(allies):
 			changeState(BattleStates.LOSE)
-		print(cA.name+" threat values: "+str(cA.threatened))
 		toNextTurn -= 1
 		if toNextTurn <= 0:
 			turn += 1
@@ -196,14 +192,16 @@ func _fixed_process(delta):
 		battlers.push_back(battlers.front())
 		battlers.pop_front()
 		cA = battlers.front()
+		print("It is now "+cA.name+"'s turn!")
 		if cA.defeated:
 			print(cA.name+" is defeated. Passing...")
 			changeState(BattleStates.PASS)
-		get_node("PlayerPanels/Actions/Name").set_text(cA.name+"'s turn!")
-		if battleFunc.isCurrentTurnEnemy(allies,battlers):
-			changeState(BattleStates.FOECHOICE)
 		else:
-			changeState(BattleStates.ALLYCHOICE)
+			get_node("PlayerPanels/Actions/Name").set_text(cA.name+"'s turn!")
+			if battleFunc.isCurrentTurnEnemy(allies,battlers):
+				changeState(BattleStates.FOECHOICE)
+			else:
+				changeState(BattleStates.ALLYCHOICE)
 	elif currentState == BattleStates.PASS:
 		changeState(BattleStates.NEXTTURN)
 	elif currentState == BattleStates.LOSE:
@@ -214,6 +212,13 @@ func _fixed_process(delta):
 		if !setOnce:
 			print("*video james voice* YOU WIN!")
 			setOnce = true
+
+func _input(event):
+	if currentState == BattleStates.SELECT:
+		if !battleFunc.isCurrentTurnEnemy(allies,battlers):
+			if event.is_action_pressed("ui_back"):
+				sel.set_hidden(true)
+				changeState(lastState)
 
 func moveObj(obj,des,deltav=1,spd=500):
 	#des takes a vector2
@@ -238,7 +243,7 @@ func actorClicked(name,click):
 			if click and !foes[get_node("FOE/"+name).numInList].defeated:
 				for i in foes:
 					if i.name == name:
-						cAT = i
+						cAT.push_back(i)
 						changeState(BattleStates.CALCDAMAGE)
 						sel.set_hidden(true)
 
@@ -248,6 +253,7 @@ func timesUp():
 	setOnce = false
 
 func changeState(newState):
+	print("Current battle state is now: "+str(newState))
 	lastState = currentState
 	currentState = newState
 	setOnce = false

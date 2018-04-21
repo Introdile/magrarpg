@@ -23,7 +23,10 @@ static func prepareBattlers(n,p,l,f=false):
 			
 			damn.set_pos(Vector2(x,y))
 			damn.idle = c.battleSprite
-			damn.idle_frames = 4
+			if c.name == "Magra":
+				damn.idle_frames = 8
+			else:
+				damn.idle_frames = 4
 			damn.prepareme()
 			n.add_child(damn)
 			x += 48
@@ -77,7 +80,7 @@ static func listPlayerMoves(p,c):
 		y += 32
 
 static func isSpeedGreater(a,b):
-	return a.SD > b.SD
+	return a._stat[7] > b._stat[7]
 
 static func isCurrentTurnEnemy(a,b):
 	#a takes the ally character list
@@ -118,8 +121,8 @@ static func setUpBars(p,a):
 		hp.set_name("hp")
 		hp.set_pos(Vector2(42,y+14))
 		hp.set_size(Vector2(128,20))
-		hp.set_max(i.HP)
-		hp.set_value(i.cHP)
+		hp.set_max(i._stat[0])
+		hp.set_value(i.stat[0])
 		hp.set_percent_visible(false)
 		#make a label for EN:
 		var enL = Label.new()
@@ -130,8 +133,8 @@ static func setUpBars(p,a):
 		en.set_name("en")
 		en.set_pos(Vector2(186+24,y+14))
 		en.set_size(Vector2(128,20))
-		en.set_max(i.EN)
-		en.set_value(i.cEN)
+		en.set_max(i._stat[1])
+		en.set_value(i.stat[1])
 		en.set_percent_visible(false)
 		y += 48
 		holder.add_child(name)
@@ -235,7 +238,7 @@ static func calculateDamage(a,s,t,e=true):
 			threat = threat*0.1
 		#ward chance + reflect
 	
-	print(a.name+"'s "+s.get_name()+" dealt "+str(dam)+" damage to "+t.name)
+	print(a.name+"'s "+s.get_name()+" dealt "+str(round(dam))+" damage to "+t.name)
 	
 	t.threaten(GD.party.find(a),threat)
 	a.cEN = a.cEN-s.get_cost()

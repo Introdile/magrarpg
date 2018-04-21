@@ -1,8 +1,12 @@
 extends Node
 
-var id = 0
+onready var calc = preload("res://DB/calculations.gd")
+
+enum APTITUDE {WEAK,AVG,STRONG}
+
+var id = -1
 var name = ""
-var spec = ""
+var specId = 0
 var portrait = 0
 var battleSprite
 
@@ -13,7 +17,7 @@ var skills = [] #maybe?
 
 var level = 1
 var xp = 0
-var xpToNext = 100
+var xpToNext = 0
 
 var defeated = false #whether or not a character is defeated
 var defeatCount = 0 #how many times a character has been defeated
@@ -22,27 +26,13 @@ var defeatCount = 0 #how many times a character has been defeated
 #Stats
 #only permament stat increases (leveling up, perm stat up items?) will modify the base (exported) values
 #the other values are used for everything else
-var _HP = 0 #Base Max Health
-var HP = _HP #Current Max Health
-var cHP = HP #Current Health
 
-var _EN = 0 #Base Max Energy
-var EN = _EN #Current Max Energy
-var cEN = EN #Current Energy
-
-#Base States
-var _MG = 0 #Base Might
-var MG = _MG #Current Might
-var _AM = 0 #Base Aim
-var AM = _AM #Current Aim
-var _PT = 0 #Base Potency
-var PT = _PT #Current Potency
-var _EC = 0 #Base Echo
-var EC = _EC #Current Echo
-var _DG = 0 #Base Dodge
-var DG = _DG #Current Dodge
-var _SD = 0 #Base Speed
-var SD = _SD #Current Speed
+# 0 = HP  1 = EN  2 = MG  3 = AM  4 = PT  5 = EC  6 = DG  7 = SD
+var stat_apt = [0,0,0,0,0,0,0,0]
+var stat_grw = [0,0,0,0,0,0,0,0]
+# _stat is the base, umodified stats and stat is the modified stats
+var _stat = [0,0,0,0,0,0,0,0]
+var stat = [0,0,0,0,0,0,0,0]
 
 #Derived Stats
 var _AR = 0 #Base Armor
@@ -100,68 +90,75 @@ class move_instance:
 		return DB.abilities[id].targetType
 
 func _ready():
+	print(name+", spec: "+DB.spec[specId].name)
+	_initialize_stats()
+	xpToNext = calc.calculate_exp(level)
+
+func _initialize_stats():
+	#DB.spec[specId]
+	stat_grw = DB.spec[specId].p_stats
+	
+	for i in range(_stat.size()):
+		if i == 0:
+			_stat[i] = calc.calculate_hp(stat_apt[i],stat_grw[i],level)
+		elif i == 1:
+			_stat[i] = calc.calculate_en(stat_apt[i],stat_grw[i],level)
+		else:
+			_stat[i] = calc.calculate_stat(stat_apt[i],stat_grw[i],level)
+		print("Stat number "+str(i)+" set to "+str(_stat[i]))
+	
 	_reset_stats("ALL")
 
 func _reset_stats(stat):
 	#'stat' takes a stat shorthand (HP for health or DG for dodge) and will set that stat to its base value
 	#it can also take "ALL" to set all stats
 	if stat == "HP":
-		HP = _HP
-		cHP = HP
+		stat[0] = _stat[0]
 	
 	if stat == "EN":
-		EN = _EN
-		cEN = EN
+		stat[1] = _stat[1]
 	
 	if stat == "MG":
-		MG = _MG
+		stat[2] = _stat[2]
 	
 	if stat == "AM":
-		AM = _AM
+		stat[3] = _stat[3]
 	
 	if stat == "PT":
-		PT = _PT
+		stat[4] = _stat[4]
 	
 	if stat == "EC":
-		EC = _EC
+		stat[5] = _stat[5]
 	
 	if stat == "DG":
-		DG = _DG
+		stat[6] = _stat[6]
 	
 	if stat == "SD":
-		SD = _SD
+		stat[7] = _stat[7]
 	
 	if stat == "ALL":
-		HP = _HP
-		cHP = HP
-		EN = _EN
-		cEN = EN
-		MG = _MG
-		AM = _AM
-		PT = _PT
-		EC = _EC
-		DG = _DG
-		SD = _SD
+		stat = _stat
+	
 	_calculate_derived_stats()
 	_calculate_new_atk_values()
 
 func _calculate_derived_stats():
-	_AR = round(HP*0.01) #+ armor value from equipment
+	_AR = round(stat[0]*0.01) #+ armor value from equipment
 	AR = _AR
-	_PR = round(DG*0.1)
+	_PR = round(stat[6]*0.1)
 	PR = _PR
 
 func _calculate_new_atk_values():
-	minAtk = round(MG*0.75)
-	maxAtk = round(MG*1.25)
+	minAtk = round(stat[2]*0.75)
+	maxAtk = round(stat[2]*1.25)
 
-func get_crit_chance(): return AM*0.01
+func get_crit_chance(): return stat[3]*0.01
 
-func get_dodge_chance(): return DG*0.01
+func get_dodge_chance(): return stat[6]*0.01
 
 func get_parry_chance(): return PR*0.01
 
-func get_echo_chance(): return EC*0.01
+func get_echo_chance(): return stat[5]*0.01
 
 func get_reflect_chance(): return RF*0.01
 
@@ -187,17 +184,15 @@ func threaten(n,t):
 				print(name+" was threatened by "+str(t)+" at place "+str(n)+"!")
 
 func getHighestThreat():
-	print("owo")
 	var t = 0
 	var tc = []
 	for i in threatened:
 		if i > t:
 			t = i
-	for i in threatened:
-		if i == t:
-			tc.push_back(1)
-		else:
-			tc.push_back(0)
+	for i in range(threatened.size()-1):
+		if threatened[i] == t:
+			tc.push_back(i)
+	print(str(tc))
 	return tc
 
 func defeat():

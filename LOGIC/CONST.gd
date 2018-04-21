@@ -1,6 +1,9 @@
 extends Node
 
+#SKILL TARGET CONSTS
 const SK_TARGET_FOES = 0
-const SK_TARGET_ALLIES = 1
-const SK_TARGET_FIELD = 2
-const SK_TARGET_ALL = 3
+const SK_TARGET_ALL_FOES = 1
+const SK_TARGET_ALLIES = 2
+const SK_TARGET_ALL_ALLIES = 3
+const SK_TARGET_FIELD = 4
+const SK_TARGET_ALL = 5

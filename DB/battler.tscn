@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://DB/battler.gd" type="Script" id=1]
-[ext_resource path="res://ASSETS/BATTLE SPRITES/magraPlaceholder.png" type="Texture" id=2]
+[ext_resource path="res://ASSETS/BATTLE SPRITES/explorer_sheet.png" type="Texture" id=2]
 [ext_resource path="res://ASSETS/BATTLE SPRITES/negamagra_defeat.png" type="Texture" id=3]
+[ext_resource path="res://ASSETS/BATTLE SPRITES/magraPlaceholder.png" type="Texture" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 
@@ -14,7 +15,7 @@ height = 46.8573
 
 script/script = ExtResource( 1 )
 idle = ExtResource( 2 )
-idle_frames = 4
+idle_frames = 8
 attack1 = null
 attack1_frames = null
 cast1 = null
@@ -24,7 +25,7 @@ defeat_frames = 8
 
 [node name="bSprite" type="Sprite" parent="."]
 
-texture = ExtResource( 2 )
+texture = ExtResource( 4 )
 hframes = 4
 region_rect = Rect2( 27, 18, 130, 37 )
 
